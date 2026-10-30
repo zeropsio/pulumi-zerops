@@ -38,7 +38,7 @@ Go modules use release tags **`sdk/v0.1.1`** and **`sdk-app/v0.1.1`**; use `@v0.
 
 | Pulumi provider | Terraform provider | Terraform bridge | Pulumi CLI |
 |---|---|---|---|
-| `pulumi-zerops` 0.1.1 | `terraform-provider-zerops` v0.1.1 | v3.142.0 | >= 3.x; tested with 3.273.0 |
+| `pulumi-zerops` 0.1.1 | `terraform-provider-zerops` v0.1.2 | v3.142.0 | >= 3.x; tested with 3.273.0 |
 
 Python requires >= 3.10. Go modules currently require Go >= 1.26.6. The .NET SDK targets `net6.0` and works with .NET 8 and 10; templates target .NET 8. Java SDKs compile with JDK 21 and emit Java 11-compatible bytecode; examples and templates target Java 17. Node.js 22 LTS is the tested Node runtime.
 
@@ -95,6 +95,20 @@ There are **9 data functions**, plus the bridge's provider-bound `terraformConfi
 | Service | `zerops:index/getService:getService` |
 | Service environment variables | `zerops:index/getServiceEnvVars:getServiceEnvVars` |
 | Service types | `zerops:index/getServiceTypes:getServiceTypes` |
+
+## Provider configuration
+
+| Pulumi key | Environment fallback | Default |
+|---|---|---|
+| `zerops:token` (secret) | `ZEROPS_TOKEN` | Required |
+| `zerops:endpoint` | `ZEROPS_ENDPOINT` | Production Prague API |
+| `zerops:organizationId` | `ZEROPS_ORGANIZATION_ID` | Discovered for a single membership |
+| `zerops:postgresqlMinDiskGb` | `ZEROPS_POSTGRESQL_MIN_DISK_GB` | `2` GB |
+| `zerops:routingForceSync` | `ZEROPS_ROUTING_FORCE_SYNC` | `false` |
+| Environment only (no Pulumi key) | `ZEROPS_CLICKHOUSE_MIN_RAM_GB` | `0.375` GB |
+| Environment only (no Pulumi key) | `ZEROPS_ELASTICSEARCH_MIN_RAM_GB` | `2` GB |
+
+Managed-service floors are applied at preview and reject smaller configured values. RAM overrides must be finite positive numbers with at most three decimal places. Dual-mode managed types require an explicit `:single@` or `:ha@` mode. When upgrading existing shorthand state, set `type` to the qualified value already recorded in `base` to avoid replacement; choosing the other mode replaces the service.
 
 ## More information
 
