@@ -64,14 +64,14 @@ public final class ServiceVerticalAutoscalingArgs extends com.pulumi.resources.R
     }
 
     /**
-     * Autoscaling max*ram*gb setting.
+     * Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     @Import(name="maxRamGb")
     private @Nullable Output<Double> maxRamGb;
 
     /**
-     * @return Autoscaling max*ram*gb setting.
+     * @return Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     public Optional<Output<Double>> maxRamGb() {
@@ -169,14 +169,14 @@ public final class ServiceVerticalAutoscalingArgs extends com.pulumi.resources.R
     }
 
     /**
-     * Autoscaling min*ram*gb setting.
+     * Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     @Import(name="minRamGb")
     private @Nullable Output<Double> minRamGb;
 
     /**
-     * @return Autoscaling min*ram*gb setting.
+     * @return Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     public Optional<Output<Double>> minRamGb() {
@@ -313,7 +313,7 @@ public final class ServiceVerticalAutoscalingArgs extends com.pulumi.resources.R
         }
 
         /**
-         * @param maxRamGb Autoscaling max*ram*gb setting.
+         * @param maxRamGb Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
          * 
          * @return builder
          * 
@@ -324,7 +324,7 @@ public final class ServiceVerticalAutoscalingArgs extends com.pulumi.resources.R
         }
 
         /**
-         * @param maxRamGb Autoscaling max*ram*gb setting.
+         * @param maxRamGb Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
          * 
          * @return builder
          * 
@@ -460,7 +460,7 @@ public final class ServiceVerticalAutoscalingArgs extends com.pulumi.resources.R
         }
 
         /**
-         * @param minRamGb Autoscaling min*ram*gb setting.
+         * @param minRamGb Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
          * 
          * @return builder
          * 
@@ -471,7 +471,7 @@ public final class ServiceVerticalAutoscalingArgs extends com.pulumi.resources.R
         }
 
         /**
-         * @param minRamGb Autoscaling min*ram*gb setting.
+         * @param minRamGb Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
          * 
          * @return builder
          * 

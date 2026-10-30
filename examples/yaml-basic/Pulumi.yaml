@@ -12,7 +12,7 @@ resources:
   project:
     type: zerops:index:Project
     options:
-      version: 0.1.0
+      version: 0.1.1
       pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
     properties:
       name: ${projectName}
@@ -20,7 +20,7 @@ resources:
   service:
     type: zerops:index:Service
     options:
-      version: 0.1.0
+      version: 0.1.1
       pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
     properties:
       projectId: ${project.id}

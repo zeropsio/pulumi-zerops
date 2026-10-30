@@ -77,7 +77,7 @@ class AwaitableGetServiceTypesResult(GetServiceTypesResult):
 def get_service_types(organization_id: Optional[_builtins.str] = None,
                       opts: Optional[pulumi.InvokeOptions] = None) -> AwaitableGetServiceTypesResult:
     """
-    Reads the organization service type catalog.
+    Reads the organization service type catalog. Managed versions use qualified family:mode@version names;<span pulumi-lang-nodejs=" zerops.Service " pulumi-lang-dotnet=" zerops.Service " pulumi-lang-go=" Service " pulumi-lang-python=" Service " pulumi-lang-yaml=" zerops.Service " pulumi-lang-java=" zerops.Service " pulumi-lang-hcl=" zerops_service "> zerops.Service </span>requires this form for dual-mode managed types.
 
     ## Example Usage
 
@@ -105,7 +105,7 @@ def get_service_types(organization_id: Optional[_builtins.str] = None,
 def get_service_types_output(organization_id: pulumi.Input[Optional[Optional[_builtins.str]]] = None,
                              opts: Optional[Union[pulumi.InvokeOptions, pulumi.InvokeOutputOptions]] = None) -> pulumi.Output[GetServiceTypesResult]:
     """
-    Reads the organization service type catalog.
+    Reads the organization service type catalog. Managed versions use qualified family:mode@version names;<span pulumi-lang-nodejs=" zerops.Service " pulumi-lang-dotnet=" zerops.Service " pulumi-lang-go=" Service " pulumi-lang-python=" Service " pulumi-lang-yaml=" zerops.Service " pulumi-lang-java=" zerops.Service " pulumi-lang-hcl=" zerops_service "> zerops.Service </span>requires this form for dual-mode managed types.
 
     ## Example Usage
 

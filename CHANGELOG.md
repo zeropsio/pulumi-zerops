@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 — 2026-10-30
+
+- Pin `terraform-provider-zerops` v0.1.2 from the Go proxy, without a local replacement.
+- Both `zerops` and `zerops-app`, their generated SDKs, component dependency and starter templates now use 0.1.1.
+- **Breaking:** preview rejects unqualified dual-mode managed-service types in `Service.type` and known `ProjectImport` YAML: use explicit `:single@` or `:ha@` modes for postgresql, mariadb, valkey, clickhouse, elasticsearch, kafka, nats, qdrant, seaweedfs and typesense. WebApp defaults to `postgresql:single@16` and validates explicit PostgreSQL single/HA modes.
+- **Upgrade:** for existing shorthand state, set `type` to the qualified value in its `base` output (for example, `postgresql:ha@16`). This updates state without replacement; selecting the other mode still replaces the service.
+- Preview defaults and enforces ClickHouse RAM >= 0.375 GB (`ZEROPS_CLICKHOUSE_MIN_RAM_GB`) and Elasticsearch RAM >= 2 GB (`ZEROPS_ELASTICSEARCH_MIN_RAM_GB`). These are environment-only overrides; there are no new Pulumi provider config keys. PostgreSQL disk remains >= 2 GB by default.
+- `verticalAutoscaling.minRamGb` and `maxRamGb` are now optional/computed, allowing provider-planned RAM defaults.
+
 ## 0.1.0 — 2026-10-29
 
 First release.

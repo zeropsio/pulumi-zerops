@@ -12,7 +12,7 @@ import (
 	"github.com/zeropsio/pulumi-zerops/sdk/go/zerops/internal"
 )
 
-// A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. PostgreSQL disk settings default to and must meet the provider<span pulumi-lang-nodejs=" postgresqlMinDiskGb " pulumi-lang-dotnet=" PostgresqlMinDiskGb " pulumi-lang-go=" postgresqlMinDiskGb " pulumi-lang-python=" postgresql_min_disk_gb " pulumi-lang-yaml=" postgresqlMinDiskGb " pulumi-lang-java=" postgresqlMinDiskGb " pulumi-lang-hcl=" postgresql_min_disk_gb "> postgresqlMinDiskGb </span>floor (2 GB by default).
+// A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. Managed scaling defaults to and must meet provider floors: PostgreSQL disk 2 GB (postgresql_min_disk_gb), ClickHouse RAM 0.375 GB (ZEROPS_CLICKHOUSE_MIN_RAM_GB), and Elasticsearch RAM 2 GB (ZEROPS_ELASTICSEARCH_MIN_RAM_GB).
 //
 // ## Example Usage
 //
@@ -47,6 +47,17 @@ import (
 //					MaxContainers: pulumi.Int(2),
 //				},
 //			}, pulumi.Timeouts(&pulumi.CustomTimeouts{Create: "30m", Update: "20m", Delete: "20m"}))
+//			if err != nil {
+//				return err
+//			}
+//			// Managed services offering both single-node and highly available modes need an
+//			// explicit mode: "postgresql:single@16" or "postgresql:ha@16". The shorthand
+//			// "postgresql@16" is rejected during planning.
+//			_, err = zerops.NewService(ctx, "db", &zerops.ServiceArgs{
+//				ProjectId: pulumi.Any(example.Id),
+//				Hostname:  pulumi.String("db"),
+//				Type:      pulumi.String("postgresql:single@16"),
+//			})
 //			if err != nil {
 //				return err
 //			}
@@ -101,7 +112,7 @@ type Service struct {
 	Status pulumi.StringOutput `pulumi:"status"`
 	// Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
 	Timeouts ServiceTimeoutsPtrOutput `pulumi:"timeouts"`
-	// Service type, preserving configured shorthand; base contains the canonical server spelling.
+	// Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
 	Type pulumi.StringOutput `pulumi:"type"`
 	// Custom autoscaling overrides; omitted values use server defaults.
 	VerticalAutoscaling ServiceVerticalAutoscalingOutput `pulumi:"verticalAutoscaling"`
@@ -170,7 +181,7 @@ type serviceState struct {
 	Status *string `pulumi:"status"`
 	// Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
 	Timeouts *ServiceTimeouts `pulumi:"timeouts"`
-	// Service type, preserving configured shorthand; base contains the canonical server spelling.
+	// Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
 	Type *string `pulumi:"type"`
 	// Custom autoscaling overrides; omitted values use server defaults.
 	VerticalAutoscaling *ServiceVerticalAutoscaling `pulumi:"verticalAutoscaling"`
@@ -201,7 +212,7 @@ type ServiceState struct {
 	Status pulumi.StringPtrInput
 	// Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
 	Timeouts ServiceTimeoutsPtrInput
-	// Service type, preserving configured shorthand; base contains the canonical server spelling.
+	// Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
 	Type pulumi.StringPtrInput
 	// Custom autoscaling overrides; omitted values use server defaults.
 	VerticalAutoscaling ServiceVerticalAutoscalingPtrInput
@@ -228,7 +239,7 @@ type serviceArgs struct {
 	StartWithoutCode *bool `pulumi:"startWithoutCode"`
 	// Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
 	Timeouts *ServiceTimeouts `pulumi:"timeouts"`
-	// Service type, preserving configured shorthand; base contains the canonical server spelling.
+	// Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
 	Type string `pulumi:"type"`
 	// Custom autoscaling overrides; omitted values use server defaults.
 	VerticalAutoscaling *ServiceVerticalAutoscaling `pulumi:"verticalAutoscaling"`
@@ -252,7 +263,7 @@ type ServiceArgs struct {
 	StartWithoutCode pulumi.BoolPtrInput
 	// Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
 	Timeouts ServiceTimeoutsPtrInput
-	// Service type, preserving configured shorthand; base contains the canonical server spelling.
+	// Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
 	Type pulumi.StringInput
 	// Custom autoscaling overrides; omitted values use server defaults.
 	VerticalAutoscaling ServiceVerticalAutoscalingPtrInput
@@ -405,7 +416,7 @@ func (o ServiceOutput) Timeouts() ServiceTimeoutsPtrOutput {
 	return o.ApplyT(func(v *Service) ServiceTimeoutsPtrOutput { return v.Timeouts }).(ServiceTimeoutsPtrOutput)
 }
 
-// Service type, preserving configured shorthand; base contains the canonical server spelling.
+// Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
 func (o ServiceOutput) Type() pulumi.StringOutput {
 	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.Type }).(pulumi.StringOutput)
 }

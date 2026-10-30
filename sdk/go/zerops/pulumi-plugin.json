@@ -2,5 +2,5 @@
     "resource": true,
     "name": "zerops",
     "server": "github://api.github.com/zeropsio/pulumi-zerops",
-    "version": "0.1.0"
+    "version": "0.1.1"
 }

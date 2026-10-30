@@ -5,7 +5,7 @@
   keywords = ["zerops", "category/cloud"]
   readme = "README.md"
   requires-python = ">=3.10"
-  version = "0.1.0"
+  version = "0.1.1"
   license = "MIT"
   [project.urls]
     Homepage = "https://zerops.io"

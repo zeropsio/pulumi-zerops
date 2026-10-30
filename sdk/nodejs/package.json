@@ -1,7 +1,7 @@
 {
     "name": "@zerops/pulumi",
-    "version": "0.1.0",
-    "description": "Manage Zerops projects, services, deployments and networking with Pulumi.. Based on terraform-provider-zerops: version v0.1.1",
+    "version": "0.1.1",
+    "description": "Manage Zerops projects, services, deployments and networking with Pulumi.. Based on terraform-provider-zerops: version v0.1.2",
     "keywords": [
         "zerops",
         "category/cloud"

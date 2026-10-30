@@ -27,7 +27,7 @@ variable, and public subdomain access waits for deployment. Outputs are
 
 ## Local SDK development
 
-The Maven dependency uses the published identity `io.zerops:pulumi:0.1.0`.
+The Maven dependency uses the published identity `io.zerops:pulumi:0.1.1`.
 From the repository root, with JDK 17+, Gradle, Maven, and Pulumi CLI:
 
 ```sh

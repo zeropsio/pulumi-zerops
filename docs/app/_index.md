@@ -19,7 +19,7 @@ resources:
   web:
     type: zerops-app:index:WebApp
     options:
-      version: 0.1.0
+      version: 0.1.1
     properties:
       appName: hello
       runtime: python@3.12

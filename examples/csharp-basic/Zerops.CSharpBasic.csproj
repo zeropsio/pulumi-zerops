@@ -6,6 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Zerops.Pulumi" Version="0.1.0" />
+    <PackageReference Include="Zerops.Pulumi" Version="0.1.1" />
   </ItemGroup>
 </Project>

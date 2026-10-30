@@ -2898,7 +2898,7 @@ class ServiceVerticalAutoscalingArgsDict(TypedDict):
     """
     max_ram_gb: NotRequired[pulumi.Input[Optional[_builtins.float]]]
     """
-    Autoscaling max*ram*gb setting.
+    Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
     """
     min_cpu: NotRequired[pulumi.Input[Optional[_builtins.int]]]
     """
@@ -2926,7 +2926,7 @@ class ServiceVerticalAutoscalingArgsDict(TypedDict):
     """
     min_ram_gb: NotRequired[pulumi.Input[Optional[_builtins.float]]]
     """
-    Autoscaling min*ram*gb setting.
+    Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
     """
     start_cpu_core_count: NotRequired[pulumi.Input[Optional[_builtins.int]]]
     """
@@ -2957,14 +2957,14 @@ class ServiceVerticalAutoscalingArgs:
         :param pulumi.Input[_builtins.str] cpu_mode: CPU allocation mode. Mode changes are subject to the server cooldown.
         :param pulumi.Input[_builtins.int] max_cpu: Autoscaling<span pulumi-lang-nodejs=" maxCpu " pulumi-lang-dotnet=" MaxCpu " pulumi-lang-go=" maxCpu " pulumi-lang-python=" max_cpu " pulumi-lang-yaml=" maxCpu " pulumi-lang-java=" maxCpu " pulumi-lang-hcl=" max_cpu "> maxCpu </span>integer CPU count.
         :param pulumi.Input[_builtins.float] max_disk_gb: Autoscaling max*disk*gb setting. PostgreSQL defaults and bounds respect the provider postgresql*min*disk_gb floor.
-        :param pulumi.Input[_builtins.float] max_ram_gb: Autoscaling max*ram*gb setting.
+        :param pulumi.Input[_builtins.float] max_ram_gb: Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         :param pulumi.Input[_builtins.int] min_cpu: Autoscaling<span pulumi-lang-nodejs=" minCpu " pulumi-lang-dotnet=" MinCpu " pulumi-lang-go=" minCpu " pulumi-lang-python=" min_cpu " pulumi-lang-yaml=" minCpu " pulumi-lang-java=" minCpu " pulumi-lang-hcl=" min_cpu "> minCpu </span>integer CPU count.
         :param pulumi.Input[_builtins.float] min_disk_gb: Autoscaling min*disk*gb setting. PostgreSQL defaults and bounds respect the provider postgresql*min*disk_gb floor.
         :param pulumi.Input[_builtins.float] min_free_cpu_cores: Autoscaling min*free*cpu_cores setting.
         :param pulumi.Input[_builtins.float] min_free_cpu_percent: Autoscaling min*free*cpu_percent setting.
         :param pulumi.Input[_builtins.float] min_free_ram_gb: Autoscaling min*free*ram_gb setting.
         :param pulumi.Input[_builtins.float] min_free_ram_percent: Autoscaling min*free*ram_percent setting.
-        :param pulumi.Input[_builtins.float] min_ram_gb: Autoscaling min*ram*gb setting.
+        :param pulumi.Input[_builtins.float] min_ram_gb: Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         :param pulumi.Input[_builtins.int] start_cpu_core_count: Autoscaling start*cpu*core_count integer CPU count.
         :param pulumi.Input[_builtins.bool] swap_enabled: Whether swap is enabled.
         """
@@ -3035,7 +3035,7 @@ class ServiceVerticalAutoscalingArgs:
     @pulumi.getter(name="maxRamGb")
     def max_ram_gb(self) -> pulumi.Input[Optional[_builtins.float]]:
         """
-        Autoscaling max*ram*gb setting.
+        Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         """
         return pulumi.get(self, "max_ram_gb")
 
@@ -3119,7 +3119,7 @@ class ServiceVerticalAutoscalingArgs:
     @pulumi.getter(name="minRamGb")
     def min_ram_gb(self) -> pulumi.Input[Optional[_builtins.float]]:
         """
-        Autoscaling min*ram*gb setting.
+        Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         """
         return pulumi.get(self, "min_ram_gb")
 

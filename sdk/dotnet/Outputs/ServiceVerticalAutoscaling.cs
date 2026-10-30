@@ -27,7 +27,7 @@ namespace Zerops.Pulumi.Outputs
         /// </summary>
         public readonly double? MaxDiskGb;
         /// <summary>
-        /// Autoscaling max*ram*gb setting.
+        /// Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         /// </summary>
         public readonly double? MaxRamGb;
         /// <summary>
@@ -55,7 +55,7 @@ namespace Zerops.Pulumi.Outputs
         /// </summary>
         public readonly double? MinFreeRamPercent;
         /// <summary>
-        /// Autoscaling min*ram*gb setting.
+        /// Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         /// </summary>
         public readonly double? MinRamGb;
         /// <summary>

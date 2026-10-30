@@ -36,7 +36,7 @@ class ServiceArgs:
 
         :param pulumi.Input[_builtins.str] hostname: Service hostname (1–40 lowercase alphanumeric characters).
         :param pulumi.Input[_builtins.str] project_id: Parent project ID.
-        :param pulumi.Input[_builtins.str] type: Service type, preserving configured shorthand; base contains the canonical server spelling.
+        :param pulumi.Input[_builtins.str] type: Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         :param pulumi.Input[_builtins.str] desired_state: RUNNING or STOPPED; omitted leaves lifecycle unmanaged. Deploying later can start a STOPPED service and produce drift.
         :param pulumi.Input[_builtins.str] env_isolation: Create-only environment isolation tokens; the server validates supported modes.
         :param pulumi.Input['ServiceHorizontalAutoscalingArgs'] horizontal_autoscaling: Custom autoscaling overrides; omitted values use server defaults.
@@ -91,7 +91,7 @@ class ServiceArgs:
     @pulumi.getter
     def type(self) -> pulumi.Input[_builtins.str]:
         """
-        Service type, preserving configured shorthand; base contains the canonical server spelling.
+        Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         """
         return pulumi.get(self, "type")
 
@@ -216,7 +216,7 @@ class _ServiceState:
         :param pulumi.Input[_builtins.bool] start_without_code: Create-only runtime startup hint. Changing it does not deploy or start an existing service.
         :param pulumi.Input[_builtins.str] status: Raw service status.
         :param pulumi.Input['ServiceTimeoutsArgs'] timeouts: Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
-        :param pulumi.Input[_builtins.str] type: Service type, preserving configured shorthand; base contains the canonical server spelling.
+        :param pulumi.Input[_builtins.str] type: Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         :param pulumi.Input['ServiceVerticalAutoscalingArgs'] vertical_autoscaling: Custom autoscaling overrides; omitted values use server defaults.
         """
         if base is not None:
@@ -396,7 +396,7 @@ class _ServiceState:
     @pulumi.getter
     def type(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
-        Service type, preserving configured shorthand; base contains the canonical server spelling.
+        Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         """
         return pulumi.get(self, "type")
 
@@ -435,7 +435,7 @@ class Service(pulumi.CustomResource):
                  vertical_autoscaling: pulumi.Input[Optional[Union['ServiceVerticalAutoscalingArgs', 'ServiceVerticalAutoscalingArgsDict', 'outputs.ServiceVerticalAutoscaling']]] = None,
                  __props__=None):
         """
-        A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. PostgreSQL disk settings default to and must meet the provider<span pulumi-lang-nodejs=" postgresqlMinDiskGb " pulumi-lang-dotnet=" PostgresqlMinDiskGb " pulumi-lang-go=" postgresqlMinDiskGb " pulumi-lang-python=" postgresql_min_disk_gb " pulumi-lang-yaml=" postgresqlMinDiskGb " pulumi-lang-java=" postgresqlMinDiskGb " pulumi-lang-hcl=" postgresql_min_disk_gb "> postgresqlMinDiskGb </span>floor (2 GB by default).
+        A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. Managed scaling defaults to and must meet provider floors: PostgreSQL disk 2 GB (postgresql_min_disk_gb), ClickHouse RAM 0.375 GB (ZEROPS_CLICKHOUSE_MIN_RAM_GB), and Elasticsearch RAM 2 GB (ZEROPS_ELASTICSEARCH_MIN_RAM_GB).
 
         ## Example Usage
 
@@ -462,6 +462,15 @@ class Service(pulumi.CustomResource):
                 "max_containers": 2,
             },
             opts = pulumi.ResourceOptions(custom_timeouts=pulumi.CustomTimeouts(create="30m", update="20m", delete="20m")))
+        # Deploying later starts the service. If desired_state is STOPPED, the next
+        # service apply stops it again; do not depend on graph ordering to stop a deploy.
+        # Managed services offering both single-node and highly available modes need an
+        # explicit mode: "postgresql:single@16" or "postgresql:ha@16". The shorthand
+        # "postgresql@16" is rejected during planning.
+        db = zerops.Service("db",
+            project_id=example["id"],
+            hostname="db",
+            type="postgresql:single@16")
         ```
         <!--End PulumiCodeChooser -->
 
@@ -494,7 +503,7 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[_builtins.str] ssh_isolation: Create-only SSH isolation tokens; the server validates supported modes.
         :param pulumi.Input[_builtins.bool] start_without_code: Create-only runtime startup hint. Changing it does not deploy or start an existing service.
         :param pulumi.Input[Union['ServiceTimeoutsArgs', 'ServiceTimeoutsArgsDict', 'outputs.ServiceTimeouts']] timeouts: Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
-        :param pulumi.Input[_builtins.str] type: Service type, preserving configured shorthand; base contains the canonical server spelling.
+        :param pulumi.Input[_builtins.str] type: Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         :param pulumi.Input[Union['ServiceVerticalAutoscalingArgs', 'ServiceVerticalAutoscalingArgsDict', 'outputs.ServiceVerticalAutoscaling']] vertical_autoscaling: Custom autoscaling overrides; omitted values use server defaults.
         """
         ...
@@ -504,7 +513,7 @@ class Service(pulumi.CustomResource):
                  args: ServiceArgs,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
-        A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. PostgreSQL disk settings default to and must meet the provider<span pulumi-lang-nodejs=" postgresqlMinDiskGb " pulumi-lang-dotnet=" PostgresqlMinDiskGb " pulumi-lang-go=" postgresqlMinDiskGb " pulumi-lang-python=" postgresql_min_disk_gb " pulumi-lang-yaml=" postgresqlMinDiskGb " pulumi-lang-java=" postgresqlMinDiskGb " pulumi-lang-hcl=" postgresql_min_disk_gb "> postgresqlMinDiskGb </span>floor (2 GB by default).
+        A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. Managed scaling defaults to and must meet provider floors: PostgreSQL disk 2 GB (postgresql_min_disk_gb), ClickHouse RAM 0.375 GB (ZEROPS_CLICKHOUSE_MIN_RAM_GB), and Elasticsearch RAM 2 GB (ZEROPS_ELASTICSEARCH_MIN_RAM_GB).
 
         ## Example Usage
 
@@ -531,6 +540,15 @@ class Service(pulumi.CustomResource):
                 "max_containers": 2,
             },
             opts = pulumi.ResourceOptions(custom_timeouts=pulumi.CustomTimeouts(create="30m", update="20m", delete="20m")))
+        # Deploying later starts the service. If desired_state is STOPPED, the next
+        # service apply stops it again; do not depend on graph ordering to stop a deploy.
+        # Managed services offering both single-node and highly available modes need an
+        # explicit mode: "postgresql:single@16" or "postgresql:ha@16". The shorthand
+        # "postgresql@16" is rejected during planning.
+        db = zerops.Service("db",
+            project_id=example["id"],
+            hostname="db",
+            type="postgresql:single@16")
         ```
         <!--End PulumiCodeChooser -->
 
@@ -650,7 +668,7 @@ class Service(pulumi.CustomResource):
         :param pulumi.Input[_builtins.bool] start_without_code: Create-only runtime startup hint. Changing it does not deploy or start an existing service.
         :param pulumi.Input[_builtins.str] status: Raw service status.
         :param pulumi.Input[Union['ServiceTimeoutsArgs', 'ServiceTimeoutsArgsDict', 'outputs.ServiceTimeouts']] timeouts: Operation timeouts. One timeout covers lock acquisition, API requests, queued work and readiness polling.
-        :param pulumi.Input[_builtins.str] type: Service type, preserving configured shorthand; base contains the canonical server spelling.
+        :param pulumi.Input[_builtins.str] type: Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         :param pulumi.Input[Union['ServiceVerticalAutoscalingArgs', 'ServiceVerticalAutoscalingArgsDict', 'outputs.ServiceVerticalAutoscaling']] vertical_autoscaling: Custom autoscaling overrides; omitted values use server defaults.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
@@ -773,7 +791,7 @@ class Service(pulumi.CustomResource):
     @pulumi.getter
     def type(self) -> pulumi.Output[_builtins.str]:
         """
-        Service type, preserving configured shorthand; base contains the canonical server spelling.
+        Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
         """
         return pulumi.get(self, "type")
 

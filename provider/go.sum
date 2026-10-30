@@ -639,8 +639,8 @@ github.com/zclconf/go-cty-debug v0.0.0-20240509010212-0d6042c53940 h1:4r45xpDWB6
 github.com/zclconf/go-cty-debug v0.0.0-20240509010212-0d6042c53940/go.mod h1:CmBdvvj3nqzfzJ6nTCIwDTPZ56aVGvDrmztiO5g3qrM=
 github.com/zclconf/go-cty-yaml v1.2.0 h1:GDyL4+e/Qe/S0B7YaecMLbVvAR/Mp21CXMOSiCTOi1M=
 github.com/zclconf/go-cty-yaml v1.2.0/go.mod h1:9YLUH4g7lOhVWqUbctnVlZ5KLpg7JAprQNgxSZ1Gyxs=
-github.com/zeropsio/terraform-provider-zerops v0.1.1 h1:7cmtfniClIYrzROnI9KFhJLuZQz3CgRQru+b27MkSP4=
-github.com/zeropsio/terraform-provider-zerops v0.1.1/go.mod h1:TtSdKpqushllZwieRH+DUzjYx/hfb3m1HDRpanK7ywE=
+github.com/zeropsio/terraform-provider-zerops v0.1.2 h1:6h02f+6SQYd2pzeOk2dRhxhgh5bDShtRPENvSPhnu/M=
+github.com/zeropsio/terraform-provider-zerops v0.1.2/go.mod h1:TtSdKpqushllZwieRH+DUzjYx/hfb3m1HDRpanK7ywE=
 github.com/zeropsio/zerops-go v1.0.24 h1:acOf1s5thQEmi6EFXuTUqySp6WOvedXYWkK9Jql/aY0=
 github.com/zeropsio/zerops-go v1.0.24/go.mod h1:SY4o+4jAIrsDTwWACooogf1OyY1jNK8NqWBe9KFcjAA=
 go.mongodb.org/mongo-driver v1.17.10 h1:kdAgQvu8TROXZpSkJQd5wzfaNCCrMbpZyKFtQ6qkPCE=

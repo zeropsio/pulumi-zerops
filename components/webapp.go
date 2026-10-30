@@ -43,13 +43,14 @@ type WebApp struct {
  ServiceId pulumi.StringOutput `pulumi:"serviceId"`
  DatabaseServiceId pulumi.StringOutput `pulumi:"databaseServiceId,optional"`
  ConnectionEnvNames pulumi.StringArrayOutput `pulumi:"connectionEnvNames"`
- Project *zerops.Project `pulumi:"project" provider:"type=zerops@0.1.0:index/project:Project"`
- Service *zerops.Service `pulumi:"service" provider:"type=zerops@0.1.0:index/service:Service"`
+ Project *zerops.Project `pulumi:"project" provider:"type=zerops@0.1.1:index/project:Project"`
+ Service *zerops.Service `pulumi:"service" provider:"type=zerops@0.1.1:index/service:Service"`
 }
 
 func (*WebApp) Annotate(a infer.Annotator) { a.SetToken("index", "WebApp") }
 
 var hostnamePattern = regexp.MustCompile(`^[a-z0-9]{1,40}$`)
+var databaseTypePattern = regexp.MustCompile(`^postgresql:(single|ha)@[^@\s]+$`)
 
 // PostgreSQL exposes these keys; it does not expose a port key. Its native port is 5432.
 var databaseEnv = map[string]string{
@@ -68,7 +69,7 @@ func normalize(a WebAppArgs) (WebAppArgs, string, bool, error) {
  if !hostnamePattern.MatchString(*a.Hostname) { return a, "", false, fmt.Errorf("hostname must contain 1–40 lowercase letters or digits") }
  if a.DatabaseType == nil { a.DatabaseType = new("postgresql:single@16") }
  if a.Database {
-  if !strings.HasPrefix(*a.DatabaseType, "postgresql:") { return a, "", false, fmt.Errorf("databaseType must use an explicit postgresql: family, such as postgresql:single@16; postgresql@16 creates HA, not single-node PostgreSQL") }
+  if !databaseTypePattern.MatchString(*a.DatabaseType) { return a, "", false, fmt.Errorf("databaseType must use an explicit mode: postgresql:single@16 or postgresql:ha@16; unqualified PostgreSQL types are rejected at plan time") }
   if *a.Hostname == "db" { return a, "", false, fmt.Errorf("hostname db is reserved for the database; choose another application hostname") }
  }
  if a.PublicAccess == nil { a.PublicAccess = new(true) }

@@ -575,7 +575,7 @@ export interface ServiceVerticalAutoscaling {
      */
     maxDiskGb?: pulumi.Input<number | undefined>;
     /**
-     * Autoscaling max*ram*gb setting.
+     * Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      */
     maxRamGb?: pulumi.Input<number | undefined>;
     /**
@@ -603,7 +603,7 @@ export interface ServiceVerticalAutoscaling {
      */
     minFreeRamPercent?: pulumi.Input<number | undefined>;
     /**
-     * Autoscaling min*ram*gb setting.
+     * Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      */
     minRamGb?: pulumi.Input<number | undefined>;
     /**

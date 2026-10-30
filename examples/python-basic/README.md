@@ -34,7 +34,7 @@ pulumi stack rm dev
 
 ## Local provider development
 
-The requirements deliberately reference the published `pulumi-zerops==0.1.0`
+The requirements deliberately reference the published `pulumi-zerops==0.1.1`
 package. For local SDK development, build the wheel from the repository root and
 install it into this example's virtual environment:
 
@@ -43,7 +43,7 @@ make build_python
 cd examples/python-basic
 python3 -m venv venv
 venv/bin/python -m pip install --find-links ../../sdk/python/dist -r requirements.txt
-venv/bin/python -m pip install --force-reinstall --no-deps ../../sdk/python/dist/pulumi_zerops-0.1.0-py3-none-any.whl
+venv/bin/python -m pip install --force-reinstall --no-deps ../../sdk/python/dist/pulumi_zerops-0.1.1-py3-none-any.whl
 venv/bin/python -m py_compile __main__.py
 ```
 

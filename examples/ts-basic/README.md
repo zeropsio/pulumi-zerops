@@ -1,7 +1,7 @@
 # TypeScript: deploy a Node.js app
 
 Requires Node.js 22+, npm, Pulumi CLI, and a Zerops account/token. The package
-manifest uses the published `@zerops/pulumi` SDK at version `0.1.0`.
+manifest uses the published `@zerops/pulumi` SDK at version `0.1.1`.
 
 ```sh
 npm install
@@ -33,7 +33,7 @@ example:
 make build_nodejs
 npm pack ./sdk/nodejs/bin --pack-destination /tmp
 cd examples/ts-basic
-npm install --no-package-lock /tmp/zerops-pulumi-0.1.0.tgz
+npm install --no-package-lock /tmp/zerops-pulumi-0.1.1.tgz
 npm run build
 ```
 

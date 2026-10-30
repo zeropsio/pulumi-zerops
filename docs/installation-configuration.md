@@ -23,9 +23,9 @@ Start with the `zerops-app` component SDK for an application; it depends on `zer
 Requires Python >= 3.10. In your project's virtual environment:
 
 ```sh
-python -m pip install pulumi-zerops-app==0.1.0
+python -m pip install pulumi-zerops-app==0.1.1
 # Primitives only:
-python -m pip install pulumi-zerops==0.1.0
+python -m pip install pulumi-zerops==0.1.1
 ```
 
 Imports: `pulumi_zerops_app` and `pulumi_zerops`.
@@ -35,21 +35,21 @@ Imports: `pulumi_zerops_app` and `pulumi_zerops`.
 Requires Go >= 1.26.6 with the current modules:
 
 ```sh
-go get github.com/zeropsio/pulumi-zerops/sdk-app/go/zeropsapp@v0.1.0
+go get github.com/zeropsio/pulumi-zerops/sdk-app/go/zeropsapp@v0.1.1
 # Primitives only:
-go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.0
+go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.1
 ```
 
-The modules are `github.com/zeropsio/pulumi-zerops/sdk-app` and `github.com/zeropsio/pulumi-zerops/sdk`, released with tags `sdk-app/v0.1.0` and `sdk/v0.1.0`. `components/` and `sdk-app/` retain monorepo `replace` directives for development; Go does not apply dependency modules' replacements to your project. Consumer programs do not need these replacements.
+The modules are `github.com/zeropsio/pulumi-zerops/sdk-app` and `github.com/zeropsio/pulumi-zerops/sdk`, released with tags `sdk-app/v0.1.1` and `sdk/v0.1.1`. `components/` and `sdk-app/` retain monorepo `replace` directives for development; Go does not apply dependency modules' replacements to your project. Consumer programs do not need these replacements.
 
 ### C# / .NET
 
 Use the .NET 8 or 10 SDK. Both language SDKs target `net6.0`; the starter targets .NET 8.
 
 ```sh
-dotnet add package Zerops.Pulumi.App --version 0.1.0
+dotnet add package Zerops.Pulumi.App --version 0.1.1
 # Primitives only:
-dotnet add package Zerops.Pulumi --version 0.1.0
+dotnet add package Zerops.Pulumi --version 0.1.1
 ```
 
 Namespaces match the package names: `Zerops.Pulumi.App` and `Zerops.Pulumi`.
@@ -62,7 +62,7 @@ Use Java 17+ and Maven for the starter. The SDKs themselves build using JDK 21 a
 <dependency>
   <groupId>io.zerops</groupId>
   <artifactId>pulumi-app</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 
@@ -79,9 +79,9 @@ Java packages are `io.zerops.zeropsapp` and `io.zerops.zerops` respectively, not
 Node.js 22 LTS is tested:
 
 ```sh
-npm install @zerops/pulumi-app@0.1.0
+npm install @zerops/pulumi-app@0.1.1
 # Primitives only:
-npm install @zerops/pulumi@0.1.0
+npm install @zerops/pulumi@0.1.1
 ```
 
 ### YAML
@@ -90,11 +90,11 @@ No language runtime or language SDK is needed. Use `zerops-app:index:WebApp` for
 
 ## Provider plugins
 
-Language SDKs carry plugin download metadata. The CLI downloads compiled resource plugins from GitHub releases; you do not need Go to run them. For a pinned YAML program, set resource `options.version: 0.1.0`. To install explicitly (or prepare a plugin cache):
+Language SDKs carry plugin download metadata. The CLI downloads compiled resource plugins from GitHub releases; you do not need Go to run them. For a pinned YAML program, set resource `options.version: 0.1.1`. To install explicitly (or prepare a plugin cache):
 
 ```sh
-pulumi plugin install resource zerops 0.1.0 --server github://api.github.com/zeropsio/pulumi-zerops
-pulumi plugin install resource zerops-app 0.1.0 --server github://api.github.com/zeropsio/pulumi-zerops
+pulumi plugin install resource zerops 0.1.1 --server github://api.github.com/zeropsio/pulumi-zerops
+pulumi plugin install resource zerops-app 0.1.1 --server github://api.github.com/zeropsio/pulumi-zerops
 ```
 
 `WebApp` uses both plugins. A primitives-only program only needs `zerops`.
@@ -120,6 +120,12 @@ All five keys belong to **`zerops`**, including when you use `zerops-app`. Expli
 | `zerops:organizationId` | `ZEROPS_ORGANIZATION_ID` | Discovered when the token has exactly one organization; otherwise specify explicitly | No |
 | `zerops:postgresqlMinDiskGb` | `ZEROPS_POSTGRESQL_MIN_DISK_GB` | `2` GB; PostgreSQL minimum disk floor, at most three decimal places | No |
 | `zerops:routingForceSync` | `ZEROPS_ROUTING_FORCE_SYNC` | `false`; whether to synchronize foreign staged routing changes | No |
+| Environment only (no Pulumi key) | `ZEROPS_CLICKHOUSE_MIN_RAM_GB` | `0.375` GB; ClickHouse RAM floor | No |
+| Environment only (no Pulumi key) | `ZEROPS_ELASTICSEARCH_MIN_RAM_GB` | `2` GB; Elasticsearch RAM floor | No |
+
+The RAM floor overrides are environment-only, not new Pulumi config keys. They must be finite positive numbers with at most three decimal places. At preview, omitted ClickHouse/Elasticsearch RAM is defaulted to its floor and smaller configured values are rejected. `verticalAutoscaling.minRamGb` and `maxRamGb` are optional inputs with computed outputs.
+
+Dual-mode managed families (postgresql, mariadb, valkey, clickhouse, elasticsearch, kafka, nats, qdrant, seaweedfs and typesense) require explicit modes such as `postgresql:single@16` or `postgresql:ha@16` in `Service.type` and `ProjectImport` YAML. Runtime types such as `nodejs@22` are unchanged. To upgrade existing shorthand state without replacement, set `type` to the qualified value in the service's `base` output; selecting the other mode still replaces the service.
 
 **Organization ID means membership `clientId`, not the membership ID.** If your token can access multiple organizations, copy the intended organization's client ID and set it with `pulumi config set zerops:organizationId <clientId>`. Do not paste an example or unrelated project/service ID.
 

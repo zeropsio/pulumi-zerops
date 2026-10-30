@@ -1,8 +1,8 @@
 # Go: deploy an application to Zerops
 
-Requires Go 1.24+, Pulumi CLI, a Zerops account/token, and the Zerops provider plugin 0.1.0. The bundled app is a dependency-free Node.js 22 HTTP server; Node.js runs on Zerops, not on your machine.
+Requires Go 1.24+, Pulumi CLI, a Zerops account/token, and the Zerops provider plugin 0.1.1. The bundled app is a dependency-free Node.js 22 HTTP server; Node.js runs on Zerops, not on your machine.
 
-This example requires the published module `github.com/zeropsio/pulumi-zerops/sdk v0.1.0`. Its `go.mod` currently includes a local-development override:
+This example requires the published module `github.com/zeropsio/pulumi-zerops/sdk v0.1.1`. Its `go.mod` currently includes a local-development override:
 
 ```go
 replace github.com/zeropsio/pulumi-zerops/sdk => ../../sdk

@@ -11,7 +11,7 @@ resources:
   web:
     type: zerops-app:index:WebApp
     options:
-      version: 0.1.0
+      version: 0.1.1
       pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
     properties:
       appName: ${appName}

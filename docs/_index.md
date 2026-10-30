@@ -13,22 +13,22 @@ Install the [Pulumi CLI](https://www.pulumi.com/docs/install/) and the SDK for y
 {{< chooser language "typescript,python,go,csharp,java,yaml" >}}
 {{% choosable language typescript %}}
 ```sh
-npm install @zerops/pulumi@0.1.0
+npm install @zerops/pulumi@0.1.1
 ```
 {{% /choosable %}}
 {{% choosable language python %}}
 ```sh
-python -m pip install pulumi-zerops==0.1.0
+python -m pip install pulumi-zerops==0.1.1
 ```
 {{% /choosable %}}
 {{% choosable language go %}}
 ```sh
-go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.0
+go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.1
 ```
 {{% /choosable %}}
 {{% choosable language csharp %}}
 ```sh
-dotnet add package Zerops.Pulumi --version 0.1.0
+dotnet add package Zerops.Pulumi --version 0.1.1
 ```
 {{% /choosable %}}
 {{% choosable language java %}}
@@ -36,13 +36,13 @@ dotnet add package Zerops.Pulumi --version 0.1.0
 <dependency>
   <groupId>io.zerops</groupId>
   <artifactId>pulumi</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 {{% /choosable %}}
 {{% choosable language yaml %}}
 ```sh
-pulumi plugin install resource zerops 0.1.0 --server github://api.github.com/zeropsio/pulumi-zerops
+pulumi plugin install resource zerops 0.1.1 --server github://api.github.com/zeropsio/pulumi-zerops
 ```
 {{% /choosable %}}
 {{< /chooser >}}
@@ -148,14 +148,14 @@ resources:
   project:
     type: zerops:index:Project
     options:
-      version: 0.1.0
+      version: 0.1.1
     properties:
       name: hello
       mode: LIGHT
   service:
     type: zerops:index:Service
     options:
-      version: 0.1.0
+      version: 0.1.1
     properties:
       projectId: ${project.id}
       hostname: app
@@ -176,5 +176,9 @@ pulumi config set --secret zerops:token
 ```
 
 The provider supports `zerops:token`, `zerops:endpoint`, `zerops:organizationId`, `zerops:postgresqlMinDiskGb`, and `zerops:routingForceSync`. The organization ID is membership `clientId`, not membership ID. See [configuration defaults, environment fallbacks and backend choices](installation-configuration.md).
+
+The RAM floors are environment-only settings, not additional Pulumi config keys: `ZEROPS_CLICKHOUSE_MIN_RAM_GB` defaults to `0.375` GB and `ZEROPS_ELASTICSEARCH_MIN_RAM_GB` to `2` GB. Overrides must be finite positive numbers with at most three decimal places. Preview defaults omitted RAM to the floor and rejects smaller configured values; `verticalAutoscaling.minRamGb` and `maxRamGb` are optional/computed.
+
+Dual-mode managed types require explicit `:single@` or `:ha@` modes in services and project-import YAML. For example, use `postgresql:single@16` or `postgresql:ha@16`. When upgrading existing shorthand state, set `type` to the qualified value in `base` for a state-only change without replacement; changing the mode replaces the service.
 
 Secrets are encrypted in state, not excluded from it. Directory deployment uploads every file except `.git` directories: curate sources, and never include secrets or dependency directories. Replacing `ServiceDeploy` starts a new deployment; destroying it does not roll back code. See the [resource and data-function map](../README.md#primitive-resource-map).

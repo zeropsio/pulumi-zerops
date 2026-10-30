@@ -1,2 +1,2 @@
 pulumi>=3,<4
-pulumi-zerops==0.1.0
+pulumi-zerops==0.1.1

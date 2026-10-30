@@ -13,7 +13,7 @@ Each starter deploys the same small Python web application. The language you use
 For example, after [choosing a state backend](docs/installation-configuration.md#choose-your-state-backend):
 
 ```sh
-pulumi new https://github.com/zeropsio/pulumi-zerops/tree/v0.1.0/templates/zerops-python
+pulumi new https://github.com/zeropsio/pulumi-zerops/tree/v0.1.1/templates/zerops-python
 pulumi config set --secret zerops:token
 pulumi up
 pulumi stack output url
@@ -23,7 +23,7 @@ The template also prompts for a secret Zerops token and an explicit `appName`. P
 
 ## Packages and compatibility
 
-Both packages are version **0.1.0**. The component SDK brings in the primitive SDK as a dependency.
+Both packages are version **0.1.1**. The component SDK brings in the primitive SDK as a dependency.
 
 | Language | `zerops` primitives | `zerops-app` component |
 |---|---|---|
@@ -34,11 +34,11 @@ Both packages are version **0.1.0**. The component SDK brings in the primitive S
 | TypeScript / Node.js | npm `@zerops/pulumi` | npm `@zerops/pulumi-app` |
 | YAML | plugin `zerops`; e.g. `zerops:index:Project` | plugin `zerops-app`; `zerops-app:index:WebApp` |
 
-Go modules use release tags **`sdk/v0.1.0`** and **`sdk-app/v0.1.0`**; use `@v0.1.0` in `go get`, not the tag's directory prefix. The `replace` directives in `components/go.mod` and `sdk-app/go.mod` are for monorepo development. Go ignores dependency modules' replacements, so consumers never inherit them.
+Go modules use release tags **`sdk/v0.1.1`** and **`sdk-app/v0.1.1`**; use `@v0.1.1` in `go get`, not the tag's directory prefix. The `replace` directives in `components/go.mod` and `sdk-app/go.mod` are for monorepo development. Go ignores dependency modules' replacements, so consumers never inherit them.
 
 | Pulumi provider | Terraform provider | Terraform bridge | Pulumi CLI |
 |---|---|---|---|
-| `pulumi-zerops` 0.1.0 | `terraform-provider-zerops` v0.1.1 | v3.142.0 | >= 3.x; tested with 3.273.0 |
+| `pulumi-zerops` 0.1.1 | `terraform-provider-zerops` v0.1.1 | v3.142.0 | >= 3.x; tested with 3.273.0 |
 
 Python requires >= 3.10. Go modules currently require Go >= 1.26.6. The .NET SDK targets `net6.0` and works with .NET 8 and 10; templates target .NET 8. Java SDKs compile with JDK 21 and emit Java 11-compatible bytecode; examples and templates target Java 17. Node.js 22 LTS is the tested Node runtime.
 

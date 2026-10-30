@@ -1,7 +1,7 @@
 {
   "name": "zerops-app",
   "displayName": "Zerops App",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deploy a Zerops web application with optional PostgreSQL using a compiled component.",
   "keywords": [
     "zerops",
@@ -61,13 +61,13 @@
           "type": "string"
         },
         "project": {
-          "$ref": "/zerops/v0.1.0/schema.json#/resources/zerops:index/project:Project"
+          "$ref": "/zerops/v0.1.1/schema.json#/resources/zerops:index/project:Project"
         },
         "projectId": {
           "type": "string"
         },
         "service": {
-          "$ref": "/zerops/v0.1.0/schema.json#/resources/zerops:index/service:Service"
+          "$ref": "/zerops/v0.1.1/schema.json#/resources/zerops:index/service:Service"
         },
         "serviceId": {
           "type": "string"
@@ -141,7 +141,7 @@
   "dependencies": [
     {
       "name": "zerops",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "downloadURL": "github://api.github.com/zeropsio/pulumi-zerops"
     }
   ]

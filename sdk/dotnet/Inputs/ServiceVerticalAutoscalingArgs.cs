@@ -32,7 +32,7 @@ namespace Zerops.Pulumi.Inputs
         public Input<double>? MaxDiskGb { get; set; }
 
         /// <summary>
-        /// Autoscaling max*ram*gb setting.
+        /// Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         /// </summary>
         [Input("maxRamGb")]
         public Input<double>? MaxRamGb { get; set; }
@@ -74,7 +74,7 @@ namespace Zerops.Pulumi.Inputs
         public Input<double>? MinFreeRamPercent { get; set; }
 
         /// <summary>
-        /// Autoscaling min*ram*gb setting.
+        /// Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
         /// </summary>
         [Input("minRamGb")]
         public Input<double>? MinRamGb { get; set; }

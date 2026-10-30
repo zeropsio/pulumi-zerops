@@ -30,7 +30,7 @@ public final class ServiceVerticalAutoscaling {
      */
     private @Nullable Double maxDiskGb;
     /**
-     * @return Autoscaling max*ram*gb setting.
+     * @return Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     private @Nullable Double maxRamGb;
@@ -65,7 +65,7 @@ public final class ServiceVerticalAutoscaling {
      */
     private @Nullable Double minFreeRamPercent;
     /**
-     * @return Autoscaling min*ram*gb setting.
+     * @return Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     private @Nullable Double minRamGb;
@@ -103,7 +103,7 @@ public final class ServiceVerticalAutoscaling {
         return Optional.ofNullable(this.maxDiskGb);
     }
     /**
-     * @return Autoscaling max*ram*gb setting.
+     * @return Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     public Optional<Double> maxRamGb() {
@@ -152,7 +152,7 @@ public final class ServiceVerticalAutoscaling {
         return Optional.ofNullable(this.minFreeRamPercent);
     }
     /**
-     * @return Autoscaling min*ram*gb setting.
+     * @return Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      * 
      */
     public Optional<Double> minRamGb() {

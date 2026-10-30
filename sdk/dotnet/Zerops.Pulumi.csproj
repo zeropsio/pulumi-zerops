@@ -3,7 +3,7 @@
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Zerops.Pulumi</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Zerops</Authors>
     <Company>Zerops</Company>
     <Description>Manage Zerops projects, services, deployments and networking with Pulumi.</Description>

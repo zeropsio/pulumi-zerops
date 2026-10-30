@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-VERSION ?= 0.1.0
+VERSION ?= 0.1.1
 PROVIDER_MODULE := github.com/zeropsio/pulumi-zerops/provider
 LDFLAGS := -X $(PROVIDER_MODULE)/pkg/version.Version=$(VERSION)
 LANGUAGES := python go dotnet java nodejs

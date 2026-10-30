@@ -1,6 +1,6 @@
 # Zerops C# example
 
-Prerequisites: .NET 8 SDK, Pulumi CLI, and a Zerops integration token with project permissions. The program uses the published `Zerops.Pulumi` NuGet package at version `0.1.0`.
+Prerequisites: .NET 8 SDK, Pulumi CLI, and a Zerops integration token with project permissions. The program uses the published `Zerops.Pulumi` NuGet package at version `0.1.1`.
 
 ```sh
 # Choose Pulumi Cloud, or a local backend instead:
@@ -29,7 +29,7 @@ pulumi stack rm dev
 From the repository root, pack and restore the local SDK without changing the published package reference or adding machine-specific NuGet configuration:
 
 ```sh
-dotnet pack sdk/dotnet -c Release -o .cache/nuget-local -p:PackageVersion=0.1.0
+dotnet pack sdk/dotnet -c Release -o .cache/nuget-local -p:PackageVersion=0.1.1
 dotnet restore examples/csharp-basic \
   --source "$PWD/.cache/nuget-local" --source https://api.nuget.org/v3/index.json
 dotnet build examples/csharp-basic --no-restore

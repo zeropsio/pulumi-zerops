@@ -62,7 +62,7 @@ The root build targets regenerate SDKs before compiling/packaging them. `compone
 Component SDK generation first builds and installs the matching local `zerops` plugin into the current `PULUMI_HOME`; no pre-populated plugin cache is required. The component schema also records the primitive package version and GitHub plugin download URL, so external resource references retain their plugin source when resolved outside the monorepo. YAML examples and starters pin both the plugin version and download URL explicitly.
 
 ```sh
-make VERSION=0.1.0 provider components build_sdks build_app_sdks
+make VERSION=0.1.1 provider components build_sdks build_app_sdks
 ```
 
 The Go `replace` directives in `components/go.mod` and `sdk-app/go.mod` point to `../sdk` for monorepo development; dependency consumers do not inherit them. Templates must reference published module/package identities, with no local replacements. Go releases require both `sdk/vX.Y.Z` and `sdk-app/vX.Y.Z` tags.

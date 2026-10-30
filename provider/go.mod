@@ -6,7 +6,7 @@ require (
 	github.com/pulumi/providertest v0.7.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.142.0
 	github.com/pulumi/pulumi/pkg/v3 v3.272.0
-	github.com/zeropsio/terraform-provider-zerops v0.1.1
+	github.com/zeropsio/terraform-provider-zerops v0.1.2
 )
 
 require (

@@ -7,5 +7,5 @@ import (
 	"github.com/blang/semver"
 )
 
-var SdkVersion semver.Version = semver.MustParse("0.1.0")
+var SdkVersion semver.Version = semver.MustParse("0.1.1")
 var pluginDownloadURL string = ""

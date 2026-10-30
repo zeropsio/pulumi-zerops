@@ -7,7 +7,7 @@ require (
 	github.com/pulumi/pulumi-go-provider v1.8.0
 	github.com/pulumi/pulumi/pkg/v3 v3.272.0
 	github.com/pulumi/pulumi/sdk/v3 v3.272.0
-	github.com/zeropsio/pulumi-zerops/sdk v0.1.0
+	github.com/zeropsio/pulumi-zerops/sdk v0.1.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 

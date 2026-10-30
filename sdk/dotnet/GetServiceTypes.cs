@@ -13,7 +13,7 @@ namespace Zerops.Pulumi
     public static class GetServiceTypes
     {
         /// <summary>
-        /// Reads the organization service type catalog.
+        /// Reads the organization service type catalog. Managed versions use qualified family:mode@version names;&lt;span pulumi-lang-nodejs=" zerops.Service " pulumi-lang-dotnet=" zerops.Service " pulumi-lang-go=" Service " pulumi-lang-python=" Service " pulumi-lang-yaml=" zerops.Service " pulumi-lang-java=" zerops.Service " pulumi-lang-hcl=" zerops_service "&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
         /// 
         /// ## Example Usage
         /// 
@@ -112,7 +112,7 @@ namespace Zerops.Pulumi
             => global::Pulumi.Deployment.Instance.InvokeAsync<GetServiceTypesResult>("zerops:index/getServiceTypes:getServiceTypes", args ?? new GetServiceTypesArgs(), options.WithDefaults());
 
         /// <summary>
-        /// Reads the organization service type catalog.
+        /// Reads the organization service type catalog. Managed versions use qualified family:mode@version names;&lt;span pulumi-lang-nodejs=" zerops.Service " pulumi-lang-dotnet=" zerops.Service " pulumi-lang-go=" Service " pulumi-lang-python=" Service " pulumi-lang-yaml=" zerops.Service " pulumi-lang-java=" zerops.Service " pulumi-lang-hcl=" zerops_service "&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
         /// 
         /// ## Example Usage
         /// 
@@ -211,7 +211,7 @@ namespace Zerops.Pulumi
             => global::Pulumi.Deployment.Instance.Invoke<GetServiceTypesResult>("zerops:index/getServiceTypes:getServiceTypes", args ?? new GetServiceTypesInvokeArgs(), options.WithDefaults());
 
         /// <summary>
-        /// Reads the organization service type catalog.
+        /// Reads the organization service type catalog. Managed versions use qualified family:mode@version names;&lt;span pulumi-lang-nodejs=" zerops.Service " pulumi-lang-dotnet=" zerops.Service " pulumi-lang-go=" Service " pulumi-lang-python=" Service " pulumi-lang-yaml=" zerops.Service " pulumi-lang-java=" zerops.Service " pulumi-lang-hcl=" zerops_service "&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
         /// 
         /// ## Example Usage
         /// 

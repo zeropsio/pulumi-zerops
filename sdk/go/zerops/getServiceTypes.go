@@ -11,7 +11,7 @@ import (
 	"github.com/zeropsio/pulumi-zerops/sdk/go/zerops/internal"
 )
 
-// Reads the organization service type catalog.
+// Reads the organization service type catalog. Managed versions use qualified family:mode@version names;<span pulumi-lang-nodejs=" zerops.Service " pulumi-lang-dotnet=" zerops.Service " pulumi-lang-go=" Service " pulumi-lang-python=" Service " pulumi-lang-yaml=" zerops.Service " pulumi-lang-java=" zerops.Service " pulumi-lang-hcl=" zerops_service "> zerops.Service </span>requires this form for dual-mode managed types.
 //
 // ## Example Usage
 //

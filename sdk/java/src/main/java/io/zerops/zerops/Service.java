@@ -20,7 +20,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 /**
- * A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless&lt;span pulumi-lang-nodejs=&#34; desiredState &#34; pulumi-lang-dotnet=&#34; DesiredState &#34; pulumi-lang-go=&#34; desiredState &#34; pulumi-lang-python=&#34; desired_state &#34; pulumi-lang-yaml=&#34; desiredState &#34; pulumi-lang-java=&#34; desiredState &#34; pulumi-lang-hcl=&#34; desired_state &#34;&gt; desiredState &lt;/span&gt;is configured. PostgreSQL disk settings default to and must meet the provider&lt;span pulumi-lang-nodejs=&#34; postgresqlMinDiskGb &#34; pulumi-lang-dotnet=&#34; PostgresqlMinDiskGb &#34; pulumi-lang-go=&#34; postgresqlMinDiskGb &#34; pulumi-lang-python=&#34; postgresql_min_disk_gb &#34; pulumi-lang-yaml=&#34; postgresqlMinDiskGb &#34; pulumi-lang-java=&#34; postgresqlMinDiskGb &#34; pulumi-lang-hcl=&#34; postgresql_min_disk_gb &#34;&gt; postgresqlMinDiskGb &lt;/span&gt;floor (2 GB by default).
+ * A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless&lt;span pulumi-lang-nodejs=&#34; desiredState &#34; pulumi-lang-dotnet=&#34; DesiredState &#34; pulumi-lang-go=&#34; desiredState &#34; pulumi-lang-python=&#34; desired_state &#34; pulumi-lang-yaml=&#34; desiredState &#34; pulumi-lang-java=&#34; desiredState &#34; pulumi-lang-hcl=&#34; desired_state &#34;&gt; desiredState &lt;/span&gt;is configured. Managed scaling defaults to and must meet provider floors: PostgreSQL disk 2 GB (postgresql_min_disk_gb), ClickHouse RAM 0.375 GB (ZEROPS_CLICKHOUSE_MIN_RAM_GB), and Elasticsearch RAM 2 GB (ZEROPS_ELASTICSEARCH_MIN_RAM_GB).
  * 
  * ## Example Usage
  * 
@@ -75,6 +75,17 @@ import javax.annotation.Nullable;
  *                     .delete(CustomTimeouts.parseTimeoutString("20m"))
  *                 .build())
  *                 .build());
+ * 
+ *         // Deploying later starts the service. If desired_state is STOPPED, the next
+ *         // service apply stops it again; do not depend on graph ordering to stop a deploy.
+ *         // Managed services offering both single-node and highly available modes need an
+ *         // explicit mode: "postgresql:single}{@literal @}{@code 16" or "postgresql:ha}{@literal @}{@code 16". The shorthand
+ *         // "postgresql}{@literal @}{@code 16" is rejected during planning.
+ *         var db = new Service("db", ServiceArgs.builder()
+ *             .projectId(example.get("id"))
+ *             .hostname("db")
+ *             .type("postgresql:single}{@literal @}{@code 16")
+ *             .build());
  * 
  *     }}{@code
  * }}{@code
@@ -272,14 +283,14 @@ public class Service extends com.pulumi.resources.CustomResource {
         return Codegen.optional(this.timeouts);
     }
     /**
-     * Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single{@literal @} or :ha{@literal @} (for example postgresql:single{@literal @}16); unqualified shorthand is rejected.
      * 
      */
     @Export(name="type", refs={String.class}, tree="[0]")
     private Output<String> type;
 
     /**
-     * @return Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * @return Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single{@literal @} or :ha{@literal @} (for example postgresql:single{@literal @}16); unqualified shorthand is rejected.
      * 
      */
     public Output<String> type() {

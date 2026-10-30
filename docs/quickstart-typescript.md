@@ -25,7 +25,7 @@ Secrets are encrypted **in state**, not omitted from it. Protect state backups a
 In an empty directory, run:
 
 ```sh
-pulumi new https://github.com/zeropsio/pulumi-zerops/tree/v0.1.0/templates/zerops-typescript
+pulumi new https://github.com/zeropsio/pulumi-zerops/tree/v0.1.1/templates/zerops-typescript
 ```
 
 Choose a project and stack name when prompted. The Zerops-specific prompts ask for a **secret token** and an explicit **appName** (the Zerops project name). The starter uses `@zerops/pulumi-app` and defaults to no database. The infrastructure program is `index.ts`; the application source is in `app/`.
@@ -89,6 +89,6 @@ Review the deletion preview and confirm. This removes the managed project, servi
 - **Organization selection fails:** set `zerops:organizationId` to the intended organization's membership `clientId`, not membership ID; ensure the token has access. It is auto-discovered only when exactly one organization is available.
 - **Invalid hostname:** use 1–40 lowercase letters or digits. `db` is reserved when the database is enabled. The hostname must match the `zerops.yml` setup name (default `app`).
 - **Asynchronous build/deploy failure:** open the service in the Zerops GUI and inspect its **build log**, correct the application or `app/zerops.yml`, then run `pulumi up` again. The GUI log contains the underlying build error.
-- **SDK or plugin cannot be resolved:** check the exact 0.1.0 package/version and [plugin download commands](installation-configuration.md#provider-plugins). Go uses module tags `sdk/v0.1.0` and `sdk-app/v0.1.0`; consumer `go get` commands use `@v0.1.0`, without monorepo replacements.
+- **SDK or plugin cannot be resolved:** check the exact 0.1.1 package/version and [plugin download commands](installation-configuration.md#provider-plugins). Go uses module tags `sdk/v0.1.1` and `sdk-app/v0.1.1`; consumer `go get` commands use `@v0.1.1`, without monorepo replacements.
 
 Continue with [the component reference](app/_index.md), [primitive examples](../examples/), or the [project overview](../README.md).

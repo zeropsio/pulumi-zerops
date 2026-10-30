@@ -201,14 +201,14 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
     }
 
     /**
-     * Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single{@literal @} or :ha{@literal @} (for example postgresql:single{@literal @}16); unqualified shorthand is rejected.
      * 
      */
     @Import(name="type")
     private @Nullable Output<String> type;
 
     /**
-     * @return Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * @return Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single{@literal @} or :ha{@literal @} (for example postgresql:single{@literal @}16); unqualified shorthand is rejected.
      * 
      */
     public Optional<Output<String>> type() {
@@ -520,7 +520,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param type Service type, preserving configured shorthand; base contains the canonical server spelling.
+         * @param type Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single{@literal @} or :ha{@literal @} (for example postgresql:single{@literal @}16); unqualified shorthand is rejected.
          * 
          * @return builder
          * 
@@ -531,7 +531,7 @@ public final class ServiceState extends com.pulumi.resources.ResourceArgs {
         }
 
         /**
-         * @param type Service type, preserving configured shorthand; base contains the canonical server spelling.
+         * @param type Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single{@literal @} or :ha{@literal @} (for example postgresql:single{@literal @}16); unqualified shorthand is rejected.
          * 
          * @return builder
          * 

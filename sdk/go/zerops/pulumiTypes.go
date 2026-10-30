@@ -6553,7 +6553,7 @@ type ServiceVerticalAutoscaling struct {
 	MaxCpu *int `pulumi:"maxCpu"`
 	// Autoscaling max*disk*gb setting. PostgreSQL defaults and bounds respect the provider postgresql*min*disk_gb floor.
 	MaxDiskGb *float64 `pulumi:"maxDiskGb"`
-	// Autoscaling max*ram*gb setting.
+	// Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 	MaxRamGb *float64 `pulumi:"maxRamGb"`
 	// Autoscaling<span pulumi-lang-nodejs=" minCpu " pulumi-lang-dotnet=" MinCpu " pulumi-lang-go=" minCpu " pulumi-lang-python=" min_cpu " pulumi-lang-yaml=" minCpu " pulumi-lang-java=" minCpu " pulumi-lang-hcl=" min_cpu "> minCpu </span>integer CPU count.
 	MinCpu *int `pulumi:"minCpu"`
@@ -6567,7 +6567,7 @@ type ServiceVerticalAutoscaling struct {
 	MinFreeRamGb *float64 `pulumi:"minFreeRamGb"`
 	// Autoscaling min*free*ram_percent setting.
 	MinFreeRamPercent *float64 `pulumi:"minFreeRamPercent"`
-	// Autoscaling min*ram*gb setting.
+	// Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 	MinRamGb *float64 `pulumi:"minRamGb"`
 	// Autoscaling start*cpu*core_count integer CPU count.
 	StartCpuCoreCount *int `pulumi:"startCpuCoreCount"`
@@ -6593,7 +6593,7 @@ type ServiceVerticalAutoscalingArgs struct {
 	MaxCpu pulumi.IntPtrInput `pulumi:"maxCpu"`
 	// Autoscaling max*disk*gb setting. PostgreSQL defaults and bounds respect the provider postgresql*min*disk_gb floor.
 	MaxDiskGb pulumi.Float64PtrInput `pulumi:"maxDiskGb"`
-	// Autoscaling max*ram*gb setting.
+	// Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 	MaxRamGb pulumi.Float64PtrInput `pulumi:"maxRamGb"`
 	// Autoscaling<span pulumi-lang-nodejs=" minCpu " pulumi-lang-dotnet=" MinCpu " pulumi-lang-go=" minCpu " pulumi-lang-python=" min_cpu " pulumi-lang-yaml=" minCpu " pulumi-lang-java=" minCpu " pulumi-lang-hcl=" min_cpu "> minCpu </span>integer CPU count.
 	MinCpu pulumi.IntPtrInput `pulumi:"minCpu"`
@@ -6607,7 +6607,7 @@ type ServiceVerticalAutoscalingArgs struct {
 	MinFreeRamGb pulumi.Float64PtrInput `pulumi:"minFreeRamGb"`
 	// Autoscaling min*free*ram_percent setting.
 	MinFreeRamPercent pulumi.Float64PtrInput `pulumi:"minFreeRamPercent"`
-	// Autoscaling min*ram*gb setting.
+	// Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 	MinRamGb pulumi.Float64PtrInput `pulumi:"minRamGb"`
 	// Autoscaling start*cpu*core_count integer CPU count.
 	StartCpuCoreCount pulumi.IntPtrInput `pulumi:"startCpuCoreCount"`
@@ -6707,7 +6707,7 @@ func (o ServiceVerticalAutoscalingOutput) MaxDiskGb() pulumi.Float64PtrOutput {
 	return o.ApplyT(func(v ServiceVerticalAutoscaling) *float64 { return v.MaxDiskGb }).(pulumi.Float64PtrOutput)
 }
 
-// Autoscaling max*ram*gb setting.
+// Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 func (o ServiceVerticalAutoscalingOutput) MaxRamGb() pulumi.Float64PtrOutput {
 	return o.ApplyT(func(v ServiceVerticalAutoscaling) *float64 { return v.MaxRamGb }).(pulumi.Float64PtrOutput)
 }
@@ -6742,7 +6742,7 @@ func (o ServiceVerticalAutoscalingOutput) MinFreeRamPercent() pulumi.Float64PtrO
 	return o.ApplyT(func(v ServiceVerticalAutoscaling) *float64 { return v.MinFreeRamPercent }).(pulumi.Float64PtrOutput)
 }
 
-// Autoscaling min*ram*gb setting.
+// Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 func (o ServiceVerticalAutoscalingOutput) MinRamGb() pulumi.Float64PtrOutput {
 	return o.ApplyT(func(v ServiceVerticalAutoscaling) *float64 { return v.MinRamGb }).(pulumi.Float64PtrOutput)
 }
@@ -6811,7 +6811,7 @@ func (o ServiceVerticalAutoscalingPtrOutput) MaxDiskGb() pulumi.Float64PtrOutput
 	}).(pulumi.Float64PtrOutput)
 }
 
-// Autoscaling max*ram*gb setting.
+// Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 func (o ServiceVerticalAutoscalingPtrOutput) MaxRamGb() pulumi.Float64PtrOutput {
 	return o.ApplyT(func(v *ServiceVerticalAutoscaling) *float64 {
 		if v == nil {
@@ -6881,7 +6881,7 @@ func (o ServiceVerticalAutoscalingPtrOutput) MinFreeRamPercent() pulumi.Float64P
 	}).(pulumi.Float64PtrOutput)
 }
 
-// Autoscaling min*ram*gb setting.
+// Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
 func (o ServiceVerticalAutoscalingPtrOutput) MinRamGb() pulumi.Float64PtrOutput {
 	return o.ApplyT(func(v *ServiceVerticalAutoscaling) *float64 {
 		if v == nil {

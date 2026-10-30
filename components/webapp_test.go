@@ -12,10 +12,19 @@ func TestValidation(t *testing.T) {
   {"name", WebAppArgs{Runtime:"python@3.12"}, "appName is required"},
   {"runtime", WebAppArgs{AppName:"hello"}, "runtime is required"},
   {"hostname", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Hostname:new("bad-name")}, "hostname"},
-  {"ha shorthand", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Database:true,DatabaseType:new("postgresql@16")}, "creates HA"},
+  {"ha shorthand", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Database:true,DatabaseType:new("postgresql@16")}, "explicit mode"},
   {"other database", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Database:true,DatabaseType:new("mysql@8")}, "postgresql:"},
+  {"unknown mode", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Database:true,DatabaseType:new("postgresql:other@16")}, "explicit mode"},
+  {"missing version", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Database:true,DatabaseType:new("postgresql:single@")}, "explicit mode"},
   {"reserved hostname", WebAppArgs{AppName:"hello",Runtime:"python@3.12",Database:true,Hostname:new("db")}, "reserved"},
  } { t.Run(tc.name, func(t *testing.T) { _,_,_,err := normalize(tc.args); if err == nil || !strings.Contains(err.Error(),tc.message) { t.Fatalf("expected %q, got %v",tc.message,err) } }) }
+}
+
+func TestDatabaseModes(t *testing.T) {
+ for _, mode := range []string{"single", "ha"} {
+  _, _, _, err := normalize(WebAppArgs{AppName:"hello", Runtime:"python@3.12", Database:true, DatabaseType:new("postgresql:"+mode+"@16")})
+  if err != nil { t.Fatalf("mode %s: %v", mode, err) }
+ }
 }
 
 func TestSourceAndDefaults(t *testing.T) {

@@ -25,7 +25,7 @@ func TestCSharpBasic(t *testing.T) {
 		t.Fatal(err)
 	}
 	source := filepath.Join(root, ".cache", "nuget-local")
-	pack := exec.Command("dotnet", "pack", filepath.Join(root, "sdk", "dotnet"), "-c", "Release", "-o", source, "-p:PackageVersion=0.1.0")
+	pack := exec.Command("dotnet", "pack", filepath.Join(root, "sdk", "dotnet"), "-c", "Release", "-o", source, "-p:PackageVersion=0.1.1")
 	if output, err := pack.CombinedOutput(); err != nil {
 		t.Fatalf("pack SDK: %v\n%s", err, output)
 	}
@@ -138,7 +138,7 @@ func TestTemplateDotnet(t *testing.T) {
 	}
 	source := filepath.Join(root, ".cache", "nuget-local")
 	for _, sdk := range []string{"sdk", "sdk-app"} {
-		cmd := exec.Command("dotnet", "pack", filepath.Join(root, sdk, "dotnet"), "-c", "Release", "-o", source, "-p:PackageVersion=0.1.0")
+		cmd := exec.Command("dotnet", "pack", filepath.Join(root, sdk, "dotnet"), "-c", "Release", "-o", source, "-p:PackageVersion=0.1.1")
 		if output, err := cmd.CombinedOutput(); err != nil {
 			t.Fatalf("pack %s: %v\n%s", sdk, err, output)
 		}

@@ -782,9 +782,9 @@ export interface ServiceVerticalAutoscaling {
      */
     maxDiskGb: number;
     /**
-     * Autoscaling max*ram*gb setting.
+     * Autoscaling max*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      */
-    maxRamGb?: number;
+    maxRamGb: number;
     /**
      * Autoscaling<span pulumi-lang-nodejs=" minCpu " pulumi-lang-dotnet=" MinCpu " pulumi-lang-go=" minCpu " pulumi-lang-python=" min_cpu " pulumi-lang-yaml=" minCpu " pulumi-lang-java=" minCpu " pulumi-lang-hcl=" min_cpu "> minCpu </span>integer CPU count.
      */
@@ -810,9 +810,9 @@ export interface ServiceVerticalAutoscaling {
      */
     minFreeRamPercent?: number;
     /**
-     * Autoscaling min*ram*gb setting.
+     * Autoscaling min*ram*gb setting. ClickHouse and Elasticsearch defaults and bounds respect their provider RAM floors (ZEROPS*CLICKHOUSE*MIN*RAM*GB and ZEROPS*ELASTICSEARCH*MIN*RAM*GB).
      */
-    minRamGb?: number;
+    minRamGb: number;
     /**
      * Autoscaling start*cpu*core_count integer CPU count.
      */

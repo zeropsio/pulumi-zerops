@@ -7,7 +7,7 @@ import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
- * A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. PostgreSQL disk settings default to and must meet the provider<span pulumi-lang-nodejs=" postgresqlMinDiskGb " pulumi-lang-dotnet=" PostgresqlMinDiskGb " pulumi-lang-go=" postgresqlMinDiskGb " pulumi-lang-python=" postgresql_min_disk_gb " pulumi-lang-yaml=" postgresqlMinDiskGb " pulumi-lang-java=" postgresqlMinDiskGb " pulumi-lang-hcl=" postgresql_min_disk_gb "> postgresqlMinDiskGb </span>floor (2 GB by default).
+ * A runtime or managed Zerops service. Deployments and generated subdomain access are separate resources. Lifecycle is unmanaged unless<span pulumi-lang-nodejs=" desiredState " pulumi-lang-dotnet=" DesiredState " pulumi-lang-go=" desiredState " pulumi-lang-python=" desired_state " pulumi-lang-yaml=" desiredState " pulumi-lang-java=" desiredState " pulumi-lang-hcl=" desired_state "> desiredState </span>is configured. Managed scaling defaults to and must meet provider floors: PostgreSQL disk 2 GB (postgresql_min_disk_gb), ClickHouse RAM 0.375 GB (ZEROPS_CLICKHOUSE_MIN_RAM_GB), and Elasticsearch RAM 2 GB (ZEROPS_ELASTICSEARCH_MIN_RAM_GB).
  *
  * ## Example Usage
  *
@@ -39,6 +39,16 @@ import * as utilities from "./utilities";
  *         update: "20m",
  *         "delete": "20m",
  *     },
+ * });
+ * // Deploying later starts the service. If desired_state is STOPPED, the next
+ * // service apply stops it again; do not depend on graph ordering to stop a deploy.
+ * // Managed services offering both single-node and highly available modes need an
+ * // explicit mode: "postgresql:single@16" or "postgresql:ha@16". The shorthand
+ * // "postgresql@16" is rejected during planning.
+ * const db = new zerops.Service("db", {
+ *     projectId: example.id,
+ *     hostname: "db",
+ *     type: "postgresql:single@16",
  * });
  * ```
  * <!--End PulumiCodeChooser -->
@@ -149,7 +159,7 @@ export class Service extends pulumi.CustomResource {
      */
     declare public readonly timeouts: pulumi.Output<outputs.ServiceTimeouts | undefined>;
     /**
-     * Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
      */
     declare public readonly type: pulumi.Output<string>;
     /**
@@ -268,7 +278,7 @@ export interface ServiceState {
      */
     timeouts?: pulumi.Input<inputs.ServiceTimeouts | undefined>;
     /**
-     * Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
      */
     type?: pulumi.Input<string | undefined>;
     /**
@@ -314,7 +324,7 @@ export interface ServiceArgs {
      */
     timeouts?: pulumi.Input<inputs.ServiceTimeouts | undefined>;
     /**
-     * Service type, preserving configured shorthand; base contains the canonical server spelling.
+     * Service type; base contains the canonical server spelling. Dual-mode managed types require explicit :single@ or :ha@ (for example postgresql:single@16); unqualified shorthand is rejected.
      */
     type: pulumi.Input<string>;
     /**

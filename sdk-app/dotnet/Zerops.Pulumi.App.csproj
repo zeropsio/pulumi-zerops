@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://zerops.io</PackageProjectUrl>
     <RepositoryUrl>https://github.com/zeropsio/pulumi-zerops</RepositoryUrl>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
 
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Zerops.Pulumi" Version="0.1.0" />
+    <PackageReference Include="Zerops.Pulumi" Version="0.1.1" />
     <PackageReference Include="Pulumi" Version="[3.76.1.0,4)" />
   </ItemGroup>
 

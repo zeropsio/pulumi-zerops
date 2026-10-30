@@ -2247,7 +2247,7 @@ public final class ZeropsFunctions {
         return Deployment.getInstance().invokeAsync("zerops:index/getServiceEnvVars:getServiceEnvVars", TypeShape.of(GetServiceEnvVarsResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
@@ -2288,7 +2288,7 @@ public final class ZeropsFunctions {
         return getServiceTypes(GetServiceTypesArgs.Empty, InvokeOptions.Empty);
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
@@ -2329,7 +2329,7 @@ public final class ZeropsFunctions {
         return getServiceTypesPlain(GetServiceTypesPlainArgs.Empty, InvokeOptions.Empty);
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
@@ -2370,7 +2370,7 @@ public final class ZeropsFunctions {
         return getServiceTypes(args, InvokeOptions.Empty);
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
@@ -2411,7 +2411,7 @@ public final class ZeropsFunctions {
         return getServiceTypesPlain(args, InvokeOptions.Empty);
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
@@ -2452,7 +2452,7 @@ public final class ZeropsFunctions {
         return Deployment.getInstance().invoke("zerops:index/getServiceTypes:getServiceTypes", TypeShape.of(GetServiceTypesResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
@@ -2493,7 +2493,7 @@ public final class ZeropsFunctions {
         return Deployment.getInstance().invoke("zerops:index/getServiceTypes:getServiceTypes", TypeShape.of(GetServiceTypesResult.class), args, Utilities.withVersion(options));
     }
     /**
-     * Reads the organization service type catalog.
+     * Reads the organization service type catalog. Managed versions use qualified family:mode{@literal @}version names;&lt;span pulumi-lang-nodejs=&#34; zerops.Service &#34; pulumi-lang-dotnet=&#34; zerops.Service &#34; pulumi-lang-go=&#34; Service &#34; pulumi-lang-python=&#34; Service &#34; pulumi-lang-yaml=&#34; zerops.Service &#34; pulumi-lang-java=&#34; zerops.Service &#34; pulumi-lang-hcl=&#34; zerops_service &#34;&gt; zerops.Service &lt;/span&gt;requires this form for dual-mode managed types.
      * 
      * ## Example Usage
      * 
