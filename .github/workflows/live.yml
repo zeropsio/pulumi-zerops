@@ -1,0 +1,132 @@
+name: Live acceptance
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      example:
+        type: choice
+        default: yaml-webapp
+        options: [yaml-basic, yaml-webapp, python-basic, go-basic, csharp-basic, java-basic, ts-basic]
+  push:
+    tags: ['v*.*.*']
+permissions:
+  contents: read
+concurrency:
+  group: ranpu-live
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.repository == 'zeropsio/pulumi-zerops' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.trust.outputs.sha }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify repository, ref and main ancestry
+        id: trust
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          [[ "$REPOSITORY" == zeropsio/pulumi-zerops ]]
+          if [[ "$GITHUB_REF" != refs/heads/main && "$GITHUB_REF" != refs/tags/v*.*.* ]]; then
+            echo 'Refusing untrusted ref' >&2
+            exit 1
+          fi
+          sha=$(git rev-parse 'HEAD^{commit}')
+          git merge-base --is-ancestor "$sha" origin/main
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+  live:
+    needs: verify
+    if: github.repository == 'zeropsio/pulumi-zerops' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: [self-hosted, linux, x64, zerops-ranpu]
+    environment: ranpu-live
+    timeout-minutes: 90
+    env:
+      ZEROPS_SANDBOX: dev
+      EXAMPLE: ${{ inputs.example || 'yaml-webapp' }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        id: checkout
+        with:
+          persist-credentials: false
+          ref: ${{ needs.verify.outputs.sha }}
+          fetch-depth: 0
+      - name: Initialize isolated live paths
+        run: |
+          state_root=$RUNNER_TEMP
+          [[ ! -d /dev/shm ]] || state_root=/dev/shm
+          echo "LIVE_STATE_DIR=$state_root/pulacc-live-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          echo "PULUMI_HOME=$RUNNER_TEMP/pulacc-plugins-$GITHUB_RUN_ID" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: provider/go.mod
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        if: env.EXAMPLE == 'ts-basic'
+        with:
+          node-version: '22'
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        if: env.EXAMPLE == 'csharp-basic'
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        if: env.EXAMPLE == 'java-basic'
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+        if: env.EXAMPLE == 'java-basic'
+        with:
+          gradle-version: '8.14.3'
+      - uses: pulumi/actions@8582a9e8cc630786854029b4e09281acd6794b58 # v6.6.1
+        with:
+          pulumi-version: 3.273.0
+      - name: Build local plugins and SDK dependencies
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          make install_plugins
+          case "$EXAMPLE" in
+            python-basic) make build_python ;;
+            go-basic) make build_go ;;
+            csharp-basic) make build_dotnet ;;
+            java-basic) make build_java ;;
+            ts-basic) make build_nodejs ;;
+          esac
+      - name: Exercise lifecycle
+        id: lifecycle
+        env:
+          ZEROPS_ENDPOINT: ${{ secrets.ZEROPS_ENDPOINT }}
+          ZEROPS_TOKEN: ${{ secrets.ZEROPS_TOKEN }}
+          ZEROPS_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
+          ZEROPS_DEV_DOMAIN: ${{ secrets.ZEROPS_DEV_DOMAIN }}
+        run: bash scripts/live-lifecycle.sh "$EXAMPLE"
+      - name: Always destroy and sweep owned stale projects
+        if: always() && steps.checkout.outcome == 'success' && steps.lifecycle.outcome != 'skipped'
+        env:
+          ZEROPS_ENDPOINT: ${{ secrets.ZEROPS_ENDPOINT }}
+          ZEROPS_TOKEN: ${{ secrets.ZEROPS_TOKEN }}
+          ZEROPS_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
+          ZEROPS_DEV_DOMAIN: ${{ secrets.ZEROPS_DEV_DOMAIN }}
+        run: |
+          set +e
+          status=0
+          if [[ -f "$LIVE_STATE_DIR/initialized" ]]; then
+            export PULUMI_BACKEND_URL="file://$LIVE_STATE_DIR/backend"
+            export PULUMI_CONFIG_PASSPHRASE=$(cat "$LIVE_STATE_DIR/passphrase")
+            printf '::add-mask::%s\n' "$PULUMI_CONFIG_PASSPHRASE"
+            cd "$LIVE_STATE_DIR/program"
+            pulumi destroy --yes --non-interactive || status=1
+            pulumi stack rm --yes --non-interactive || status=1
+            cd "$GITHUB_WORKSPACE"
+          fi
+          bash scripts/live-sweep.sh || status=1
+          rm -rf "$LIVE_STATE_DIR" "$PULUMI_HOME"
+          exit "$status"

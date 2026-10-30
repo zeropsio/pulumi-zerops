@@ -1,0 +1,10 @@
+name: zerops-go-basic
+runtime: go
+description: Deploy a Node.js application to Zerops using Go.
+config:
+  appName:
+    type: string
+    description: Explicit name of the Zerops project.
+  message:
+    type: string
+    default: Hello from Zerops

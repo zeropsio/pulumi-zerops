@@ -1,0 +1,148 @@
+{
+  "name": "zerops-app",
+  "displayName": "Zerops App",
+  "version": "0.1.0",
+  "description": "Deploy a Zerops web application with optional PostgreSQL using a compiled component.",
+  "keywords": [
+    "zerops",
+    "kind/component",
+    "category/cloud"
+  ],
+  "homepage": "https://zerops.io",
+  "license": "MIT",
+  "repository": "https://github.com/zeropsio/pulumi-zerops",
+  "pluginDownloadURL": "github://api.github.com/zeropsio/pulumi-zerops",
+  "publisher": "Zerops",
+  "language": {
+    "csharp": {
+      "namespaces": {
+        "zerops-app": "App"
+      },
+      "respectSchemaVersion": true,
+      "rootNamespace": "Zerops.Pulumi"
+    },
+    "go": {
+      "importBasePath": "github.com/zeropsio/pulumi-zerops/sdk-app/go/zeropsapp",
+      "respectSchemaVersion": true,
+      "rootPackageName": "zeropsapp"
+    },
+    "java": {
+      "basePackage": "io.zerops",
+      "buildFiles": "gradle",
+      "gradleNexusPublishPluginVersion": "2.0.0",
+      "packages": {
+        "zerops-app": "zeropsapp"
+      }
+    },
+    "nodejs": {
+      "packageName": "@zerops/pulumi-app",
+      "respectSchemaVersion": true
+    },
+    "python": {
+      "packageName": "pulumi_zerops_app",
+      "pyproject": {
+        "enabled": true
+      },
+      "respectSchemaVersion": true
+    }
+  },
+  "config": {},
+  "resources": {
+    "zerops-app:index:WebApp": {
+      "properties": {
+        "connectionEnvNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "plain": true
+          }
+        },
+        "databaseServiceId": {
+          "type": "string"
+        },
+        "project": {
+          "$ref": "/zerops/v0.1.0/schema.json#/resources/zerops:index/project:Project"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "service": {
+          "$ref": "/zerops/v0.1.0/schema.json#/resources/zerops:index/service:Service"
+        },
+        "serviceId": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "projectId",
+        "serviceId",
+        "connectionEnvNames",
+        "project",
+        "service"
+      ],
+      "inputProperties": {
+        "appName": {
+          "type": "string",
+          "plain": true,
+          "description": "Explicit Zerops project name (no automatic naming)."
+        },
+        "database": {
+          "type": "boolean",
+          "plain": true
+        },
+        "databaseType": {
+          "type": "string",
+          "plain": true,
+          "default": "postgresql:single@16"
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Additional runtime environment values; secret inputs remain secret. Database connection names are reserved when database is enabled."
+        },
+        "hostname": {
+          "type": "string",
+          "plain": true,
+          "default": "app"
+        },
+        "publicAccess": {
+          "type": "boolean",
+          "plain": true,
+          "default": true
+        },
+        "runtime": {
+          "type": "string",
+          "plain": true,
+          "description": "Runtime service type, for example python@3.12 or nodejs@22."
+        },
+        "source": {
+          "type": "string",
+          "plain": true,
+          "description": "Curated application directory relative to the Pulumi program. All files except .git directories are uploaded; do not include secrets or dependencies."
+        },
+        "zeropsYaml": {
+          "type": "string",
+          "plain": true
+        }
+      },
+      "requiredInputs": [
+        "appName",
+        "runtime"
+      ],
+      "isComponent": true
+    }
+  },
+  "dependencies": [
+    {
+      "name": "zerops",
+      "version": "0.1.0",
+      "downloadURL": "github://api.github.com/zeropsio/pulumi-zerops"
+    }
+  ]
+}

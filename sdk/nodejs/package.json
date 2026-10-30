@@ -1,0 +1,27 @@
+{
+    "name": "@zerops/pulumi",
+    "version": "0.1.0",
+    "description": "Manage Zerops projects, services, deployments and networking with Pulumi.. Based on terraform-provider-zerops: version v0.1.1",
+    "keywords": [
+        "zerops",
+        "category/cloud"
+    ],
+    "homepage": "https://zerops.io",
+    "repository": "https://github.com/zeropsio/pulumi-zerops",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.269.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "typescript": "^4.7.0"
+    },
+    "pulumi": {
+        "resource": true,
+        "name": "zerops",
+        "server": "github://api.github.com/zeropsio/pulumi-zerops"
+    }
+}

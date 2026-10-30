@@ -1,0 +1,17 @@
+.cache/
+bin/
+dist/
+**/node_modules/
+**/bin/
+**/obj/
+**/build/
+**/.gradle/
+**/__pycache__/
+**/*.egg-info/
+**/.venv/
+**/venv/
+**/target/
+**/Pulumi.*.yaml
+!**/Pulumi.yaml
+sdk/nodejs/package-lock.json
+sdk-app/nodejs/package-lock.json

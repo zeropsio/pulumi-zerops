@@ -1,0 +1,39 @@
+name: ${PROJECT}
+description: ${DESCRIPTION}
+runtime: yaml
+template:
+  displayName: Zerops web app (YAML)
+  description: A Zerops project with a Python web app, optional PostgreSQL and a public URL
+  config:
+    zerops:token:
+      description: Zerops API token (Settings → Access tokens)
+      secret: true
+    appName:
+      description: Zerops project name for this app
+      default: ${PROJECT}
+  quickstart: |
+    Run `pulumi up`, then open the `url` output.
+    Enable PostgreSQL with `pulumi config set database true` and run `pulumi up` again.
+    Run `pulumi destroy` to remove everything.
+config:
+  appName:
+    type: string
+  database:
+    type: boolean
+    default: false
+resources:
+  # One component manages the project, application and optional database.
+  web:
+    type: zerops-app:index:WebApp
+    options:
+      version: 0.1.0
+      pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
+    properties:
+      appName: ${appName}
+      runtime: python@3.12
+      source: ./app
+      database: ${database}
+outputs:
+  url: ${web.url}
+  projectId: ${web.projectId}
+  serviceId: ${web.serviceId}

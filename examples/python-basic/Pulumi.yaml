@@ -1,0 +1,14 @@
+name: zerops-python-basic
+runtime:
+  name: python
+  options:
+    toolchain: pip
+    virtualenv: venv
+description: Deploy a Node.js application to Zerops using Python.
+config:
+  appName:
+    type: string
+    description: Explicit name of the Zerops project to create.
+  message:
+    type: string
+    default: Hello from Zerops

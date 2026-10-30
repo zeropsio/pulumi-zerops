@@ -1,0 +1,6 @@
+name: zerops-ts-basic
+runtime:
+  name: nodejs
+  options:
+    typescript: true
+description: Deploy a Node.js HTTP app to Zerops using TypeScript.

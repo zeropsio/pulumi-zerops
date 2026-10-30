@@ -1,0 +1,21 @@
+name: ${PROJECT}
+description: ${DESCRIPTION}
+runtime:
+  name: python
+  options:
+    toolchain: pip
+    virtualenv: venv
+template:
+  displayName: Zerops web app (Python)
+  description: A Zerops project with a Python web app, optional PostgreSQL and a public URL
+  config:
+    zerops:token:
+      description: Zerops API token (Settings → Access tokens)
+      secret: true
+    appName:
+      description: Zerops project name for this app
+      default: ${PROJECT}
+  quickstart: |
+    Run `pulumi up`, then open the `url` stack output to see your app.
+    Enable PostgreSQL with `pulumi config set database true` and run `pulumi up` again.
+    Run `pulumi destroy` to remove everything when you are finished.

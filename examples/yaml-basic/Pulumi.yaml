@@ -1,0 +1,32 @@
+name: zerops-yaml-basic
+runtime: yaml
+description: A minimal Zerops project and runtime service, without deployment.
+config:
+  projectName:
+    type: string
+    default: pulacc-${pulumi.stack}
+  serviceHostname:
+    type: string
+    default: app
+resources:
+  project:
+    type: zerops:index:Project
+    options:
+      version: 0.1.0
+      pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
+    properties:
+      name: ${projectName}
+      mode: LIGHT
+  service:
+    type: zerops:index:Service
+    options:
+      version: 0.1.0
+      pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
+    properties:
+      projectId: ${project.id}
+      hostname: ${serviceHostname}
+      type: nodejs@22
+      startWithoutCode: true
+outputs:
+  projectId: ${project.id}
+  serviceId: ${service.id}

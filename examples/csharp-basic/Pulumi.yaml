@@ -1,0 +1,3 @@
+name: zerops-csharp-basic
+runtime: dotnet
+description: Deploy a Node.js application to Zerops using C# and Pulumi.

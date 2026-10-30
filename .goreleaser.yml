@@ -1,0 +1,40 @@
+version: 2
+builds:
+  - id: zerops
+    dir: provider
+    main: ./cmd/pulumi-resource-zerops
+    binary: pulumi-resource-zerops
+    env: [CGO_ENABLED=0]
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w -X github.com/zeropsio/pulumi-zerops/provider/pkg/version.Version={{.Version}}
+  - id: zerops-app
+    dir: components
+    main: ./cmd/pulumi-resource-zerops-app
+    binary: pulumi-resource-zerops-app
+    env: [CGO_ENABLED=0]
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+archives:
+  - id: zerops
+    ids: [zerops]
+    formats: [tar.gz]
+    name_template: 'pulumi-resource-zerops-v{{.Version}}-{{.Os}}-{{.Arch}}'
+    files: [none*]
+  - id: zerops-app
+    ids: [zerops-app]
+    formats: [tar.gz]
+    name_template: 'pulumi-resource-zerops-app-v{{.Version}}-{{.Os}}-{{.Arch}}'
+    files: [none*]
+checksum:
+  name_template: checksums.txt
+changelog:
+  disable: true
+release:
+  mode: replace
+  github:
+    owner: zeropsio
+    name: pulumi-zerops

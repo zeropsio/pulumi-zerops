@@ -1,0 +1,25 @@
+{
+    "default-resource-schema-fixups": {
+        "resources": {
+            "zerops_integration_token": {},
+            "zerops_object_storage": {},
+            "zerops_project": {},
+            "zerops_project_dedicated_ipv4": {},
+            "zerops_project_env": {},
+            "zerops_project_import": {},
+            "zerops_project_l7_balancer_config": {},
+            "zerops_project_prometheus_config": {},
+            "zerops_project_remote_logging": {},
+            "zerops_project_vpn_peer": {},
+            "zerops_public_http_routing": {},
+            "zerops_public_port_routing": {},
+            "zerops_service": {},
+            "zerops_service_backup_config": {},
+            "zerops_service_deploy": {},
+            "zerops_service_env": {},
+            "zerops_service_git_integration": {},
+            "zerops_service_restart": {},
+            "zerops_service_subdomain_access": {}
+        }
+    }
+}

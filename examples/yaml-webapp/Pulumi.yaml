@@ -1,0 +1,25 @@
+name: zerops-webapp
+runtime: yaml
+description: A Python application with single-node PostgreSQL, composed by Zerops App.
+config:
+  appName:
+    type: string
+  runtime:
+    type: string
+    default: python@3.12
+resources:
+  web:
+    type: zerops-app:index:WebApp
+    options:
+      version: 0.1.0
+      pluginDownloadURL: github://api.github.com/zeropsio/pulumi-zerops
+    properties:
+      appName: ${appName}
+      runtime: ${runtime}
+      source: ./app
+      database: true
+outputs:
+  url: ${web.url}
+  projectId: ${web.projectId}
+  serviceId: ${web.serviceId}
+  connectionEnvNames: ${web.connectionEnvNames}

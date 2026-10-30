@@ -1,0 +1,16 @@
+{
+  "name": "zerops-ts-basic",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3",
+    "@zerops/pulumi": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "typescript": "^5.0.0"
+  }
+}

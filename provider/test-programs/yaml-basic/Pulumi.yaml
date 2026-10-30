@@ -1,0 +1,18 @@
+name: zerops-provider-yaml-test
+runtime: yaml
+resources:
+  project:
+    type: zerops:index:Project
+    properties:
+      name: pulacc-provider-${pulumi.stack}
+      mode: LIGHT
+  service:
+    type: zerops:index:Service
+    properties:
+      projectId: ${project.id}
+      hostname: app
+      type: nodejs@22
+      startWithoutCode: true
+outputs:
+  projectId: ${project.id}
+  serviceId: ${service.id}

@@ -1,0 +1,21 @@
+[project]
+  name = "pulumi-zerops"
+  description = "Manage Zerops projects, services, deployments and networking with Pulumi."
+  dependencies = ["packaging>=24.0", "pulumi>=3.231.0,<4.0.0", "semver>=2.8.1", "typing-extensions>=4.11,<5; python_version < \"3.11\""]
+  keywords = ["zerops", "category/cloud"]
+  readme = "README.md"
+  requires-python = ">=3.10"
+  version = "0.1.0"
+  license = "MIT"
+  [project.urls]
+    Homepage = "https://zerops.io"
+    Repository = "https://github.com/zeropsio/pulumi-zerops"
+
+[build-system]
+  requires = ["setuptools>=77.0.3"]
+  build-backend = "setuptools.build_meta"
+
+[tool]
+  [tool.setuptools]
+    [tool.setuptools.package-data]
+      pulumi_zerops = ["py.typed", "pulumi-plugin.json"]

@@ -1,0 +1,17 @@
+name: ${PROJECT}
+description: ${DESCRIPTION}
+runtime: java
+template:
+  displayName: Zerops web app (Java)
+  description: A Zerops project with a Python web app, optional PostgreSQL and a public URL
+  config:
+    zerops:token:
+      description: Zerops API token (Settings → Access tokens)
+      secret: true
+    appName:
+      description: Zerops project name for this app
+      default: ${PROJECT}
+  quickstart: |
+    Run `pulumi up`, then open the `url` output.
+    Enable PostgreSQL with `pulumi config set database true` and run `pulumi up`.
+    Run `pulumi destroy` to remove everything.
