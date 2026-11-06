@@ -17,6 +17,9 @@ jobs:
         with:
           go-version-file: provider/go.mod
           cache-dependency-path: '**/go.sum'
+      - uses: pulumi/actions@8582a9e8cc630786854029b4e09281acd6794b58 # v6.6.1
+        with:
+          pulumi-version: 3.273.0
       - run: make provider test check_schema check_components_schema
         env:
           # Authenticated (read-only) GitHub API calls for Pulumi plugin downloads; avoids rate limits.
