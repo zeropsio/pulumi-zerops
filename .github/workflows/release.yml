@@ -105,6 +105,9 @@ jobs:
           python -m pip install build
           python -m build sdk/python --outdir dist
       - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          # An empty password keeps the default OIDC trusted-publishing path.
+          password: ${{ secrets.PYPI_API_TOKEN }}
   pypi-app:
     if: always() && needs.verify.result == 'success' && (needs.release.result == 'success' || github.event_name == 'workflow_dispatch') && needs.pypi.result == 'success' && vars.PUBLISH_PYPI == 'true'
     needs: [verify, release, pypi]
@@ -124,6 +127,9 @@ jobs:
           python -m pip install build
           python -m build sdk-app/python --outdir dist
       - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          # An empty password keeps the default OIDC trusted-publishing path.
+          password: ${{ secrets.PYPI_API_TOKEN }}
   npm:
     if: always() && needs.verify.result == 'success' && (needs.release.result == 'success' || github.event_name == 'workflow_dispatch') && vars.PUBLISH_NPM == 'true'
     needs: [verify, release]
