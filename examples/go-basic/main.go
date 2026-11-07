@@ -31,6 +31,8 @@ func main() {
 			ProjectId: project.ID(),
 			Hostname:  pulumi.String("app"),
 			Type:      pulumi.String("nodejs@22"),
+			HorizontalAutoscaling: &zerops.ServiceHorizontalAutoscalingArgs{MinContainers: pulumi.Int(1), MaxContainers: pulumi.Int(1)},
+			VerticalAutoscaling:   &zerops.ServiceVerticalAutoscalingArgs{MinCpu: pulumi.Int(1), MaxCpu: pulumi.Int(1), MinRamGb: pulumi.Float64(0.25), MaxRamGb: pulumi.Float64(0.25), MinDiskGb: pulumi.Float64(1)},
 		})
 		if err != nil {
 			return err

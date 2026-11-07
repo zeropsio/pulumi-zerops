@@ -27,6 +27,15 @@ resources:
       hostname: ${serviceHostname}
       type: nodejs@22
       startWithoutCode: true
+      horizontalAutoscaling:
+        minContainers: 1
+        maxContainers: 1
+      verticalAutoscaling:
+        minCpu: 1
+        maxCpu: 1
+        minRamGb: 0.25
+        maxRamGb: 0.25
+        minDiskGb: 1
 outputs:
   projectId: ${project.id}
   serviceId: ${service.id}

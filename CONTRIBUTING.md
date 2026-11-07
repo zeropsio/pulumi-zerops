@@ -78,15 +78,22 @@ Replace `python` with `go`, `dotnet`, `java` or `nodejs` as appropriate; build t
 
 ## Live acceptance tests
 
-Live tests create billable Zerops resources and are **maintainer-run**. They require a dedicated Zerops development/test organization, a restricted token and the appropriate endpoint/organization configuration. Do not point them at a production organization or supply credentials to untrusted pull requests.
+Live tests create billable Zerops resources and are **maintainer-run**. Use only the dedicated production CI organization, never a customer organization, and a restricted CI token. Never supply credentials to untrusted pull requests.
 
-The [live workflow](.github/workflows/live.yml) runs only in the trusted repository/context, on its designated runner with environment-protected secrets. It builds local dependencies and invokes:
+The [live workflow](.github/workflows/live.yml) runs weekly, by manual dispatch, and on `v*` tags only. Its secret-free GitHub-hosted verification job checks the repository/ref and `main` ancestry before the `zerops-prod` runner enters the protected `prod-live` environment. Concurrency `prod-live` prevents overlapping runs. Before installing tools or building, it requires environment secrets `ZEROPS_ENDPOINT` (exactly `https://api.app-prg1.zerops.io`), `ZEROPS_TOKEN` and `ZEROPS_ORGANIZATION_ID`. The organization secret also supplies the helper's `ZEROPS_CI_ORGANIZATION_ID` pin. It sets `ZEROPS_SANDBOX=prod` and retains the released Terraform v0.1.2 provider's production transport/creation ledger. It builds local dependencies and invokes:
 
 ```sh
 bash scripts/live-lifecycle.sh yaml-webapp
 ```
 
+For a local maintainer invocation, export those variables plus `ZEROPS_SANDBOX=prod`, `ZEROPS_CI_ORGANIZATION_ID=$ZEROPS_ORGANIZATION_ID` and an absolute `ZEROPS_PROD_LEDGER` path. The default workflow suite remains `yaml-webapp`; other dispatch choices exercise their actual language programs. Projects use `tfacc-pulumi-…` names because the pinned provider guard supports `tfacc-`, not `ci-`. Service hostnames remain `app`/`db` (Zerops hostnames are alphanumeric). All live projects are LIGHT, with no public IPv4; services are single-container/NON_HA with small fixed CPU/RAM limits, and PostgreSQL is `postgresql:single@16` with at least 2 GB disk.
+
+The final cleanup always runs after a successful configuration preflight, including lifecycle failures. Failed destroy state remains available for its retry; the sweeper then rechecks organization ownership immediately before deleting **only `tfacc-` projects in the dedicated CI organization**, including fresh projects from interrupted runs. Success requires an API-confirmed zero `tfacc-` projects, rather than only zero aged candidates. This organization/prefix is reserved for CI: do not put unrelated `tfacc-` projects there. The provider records created project IDs in the production ledger; it is kept separate from the disposable encrypted Pulumi state. Never upload either state or ledger as workflow artifacts.
+
 Maintainers configure the workflow environment and runner rather than copying credential values into programs. Credential-gated Go acceptance tests live in `examples/`; unit tests do not require an API token. A complete live check covers initial deployment and HTTP response, no-change preview, app update/redeployment, destroy and API-confirmed absence. Always clean up resources and state, including after failures; never publish raw logs containing credentials or IDs.
+
+Offline helper regression tests use fake API responses and no credentials: `python scripts/test_live.py`. Component production-validation tests are included in `cd components && go test ./...`.
+
 
 ## Releasing
 

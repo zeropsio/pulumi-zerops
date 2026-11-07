@@ -12,6 +12,8 @@ import io.zerops.zerops.ServiceEnv;
 import io.zerops.zerops.ServiceEnvArgs;
 import io.zerops.zerops.ServiceSubdomainAccess;
 import io.zerops.zerops.ServiceSubdomainAccessArgs;
+import io.zerops.zerops.inputs.ServiceHorizontalAutoscalingArgs;
+import io.zerops.zerops.inputs.ServiceVerticalAutoscalingArgs;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -33,7 +35,9 @@ public final class App {
             var project = new Project("project", ProjectArgs.builder()
                     .name(appName).mode("LIGHT").build());
             var service = new Service("app", ServiceArgs.builder()
-                    .projectId(project.id()).hostname("app").type("nodejs@22").build());
+                    .projectId(project.id()).hostname("app").type("nodejs@22")
+                    .horizontalAutoscaling(ServiceHorizontalAutoscalingArgs.builder().minContainers(1).maxContainers(1).build())
+                    .verticalAutoscaling(ServiceVerticalAutoscalingArgs.builder().minCpu(1).maxCpu(1).minRamGb(0.25).maxRamGb(0.25).minDiskGb(1.0).build()).build());
             var environment = new ServiceEnv("message", ServiceEnvArgs.builder()
                     .serviceId(service.id()).key("MESSAGE").content(message).build());
             var deployment = new ServiceDeploy("deploy", ServiceDeployArgs.builder()

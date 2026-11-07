@@ -5,6 +5,8 @@ import (
  "path/filepath"
  "strings"
  "testing"
+
+ "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func TestValidation(t *testing.T) {
@@ -49,4 +51,44 @@ func TestDatabaseReferences(t *testing.T) {
   if key == "DB_PORT" { if value != "5432" { t.Fatal(value) }; continue }
   if !strings.HasPrefix(value,"${db_") || !strings.HasSuffix(value,"}") { t.Fatalf("%s is not a server-side reference",key) }
  }
+}
+
+func TestProductionLiveValidation(t *testing.T) {
+ t.Setenv("ZEROPS_SANDBOX", "prod")
+ for _, tc := range []struct{name, project, hostname, databaseType string; valid bool}{
+  {"small CI app", "tfacc-pulumi-test", "app", "postgresql:single@16", true},
+  {"foreign project", "customer", "app", "postgresql:single@16", false},
+  {"HA database", "tfacc-pulumi-test", "app", "postgresql:ha@16", false},
+ } {
+  t.Run(tc.name, func(t *testing.T) {
+   _, _, _, err := normalize(WebAppArgs{AppName:tc.project, Runtime:"python@3.12", Hostname:&tc.hostname, Database:true, DatabaseType:&tc.databaseType})
+   if (err == nil) != tc.valid { t.Fatalf("valid=%v, error=%v", tc.valid, err) }
+  })
+ }
+}
+
+func TestProductionDatabaseResourceArgs(t *testing.T) {
+ t.Setenv("ZEROPS_SANDBOX", "prod")
+ mocks := &compositionMocks{}
+ err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+  _, err := NewWebApp(ctx, "web", WebAppArgs{AppName:"tfacc-pulumi-test", Runtime:"python@3.12", Database:true})
+  return err
+ }, pulumi.WithMocks("project", "stack", mocks))
+ if err != nil { t.Fatal(err) }
+ foundDB, foundRuntime := false, false
+ for _, r := range mocks.resources {
+  switch r.Name {
+  case "web-database":
+   foundDB = true
+   if r.Inputs["type"].StringValue() != "postgresql:single@16" { t.Errorf("unexpected database type: %v", r.Inputs["type"]) }
+   if horizontal, ok := r.Inputs["horizontalAutoscaling"]; ok && !horizontal.IsNull() { t.Errorf("fixed-topology database has horizontal autoscaling: %v", horizontal) }
+   vertical := r.Inputs["verticalAutoscaling"].ObjectValue()
+   if vertical["minDiskGb"].NumberValue() != 2 { t.Errorf("database minimum disk must be 2 GB: %v", vertical) }
+  case "web-service":
+   foundRuntime = true
+   horizontal := r.Inputs["horizontalAutoscaling"].ObjectValue()
+   if horizontal["minContainers"].NumberValue() != 1 || horizontal["maxContainers"].NumberValue() != 1 { t.Errorf("runtime must retain one container: %v", horizontal) }
+  }
+ }
+ if !foundDB || !foundRuntime { t.Fatalf("missing generated database/runtime resources: database=%v runtime=%v", foundDB, foundRuntime) }
 }

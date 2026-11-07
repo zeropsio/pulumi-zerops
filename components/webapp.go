@@ -73,6 +73,11 @@ func normalize(a WebAppArgs) (WebAppArgs, string, bool, error) {
   if *a.Hostname == "db" { return a, "", false, fmt.Errorf("hostname db is reserved for the database; choose another application hostname") }
  }
  if a.PublicAccess == nil { a.PublicAccess = new(true) }
+ if os.Getenv("ZEROPS_SANDBOX") == "prod" {
+  if !strings.HasPrefix(a.AppName, "tfacc-") || (a.Database && *a.DatabaseType != "postgresql:single@16") {
+   return a, "", false, fmt.Errorf("production live WebApp requires a tfacc- project and postgresql:single@16")
+  }
+ }
  if a.Source == nil { return a, "", false, nil }
  if strings.TrimSpace(*a.Source) == "" { return a, "", false, fmt.Errorf("source must name an application directory, or omit it to create a service without code") }
  // Both resource plugins inherit the engine's program working directory. Keep relative
@@ -103,6 +108,7 @@ func NewWebApp(ctx *pulumi.Context, name string, args WebAppArgs, opts ...pulumi
  if mismatch { if err := ctx.Log.Warn(fmt.Sprintf("zerops.yml has no setup named %q; deployment selects the hostname, so update the setup name or hostname", *a.Hostname), nil); err != nil { return nil, err } }
  w := &WebApp{}
  if err := ctx.RegisterComponentResource("zerops-app:index:WebApp", name, w, opts...); err != nil { return nil, err }
+ production := os.Getenv("ZEROPS_SANDBOX") == "prod"
  // Parent inheritance preserves explicit providers["zerops"] and otherwise uses
  // the program's default zerops provider, including zerops:token configuration.
  child := pulumi.Parent(w)
@@ -111,14 +117,22 @@ func NewWebApp(ctx *pulumi.Context, name string, args WebAppArgs, opts ...pulumi
  w.Project, w.ProjectId = project, project.ID().ToStringOutput()
  var db *zerops.Service
  if a.Database {
-  db, err = zerops.NewService(ctx, name+"-database", &zerops.ServiceArgs{ProjectId: project.ID(), Hostname: pulumi.String("db"), Type: pulumi.String(*a.DatabaseType)}, child)
+  dbArgs := &zerops.ServiceArgs{ProjectId: project.ID(), Hostname: pulumi.String("db"), Type: pulumi.String(*a.DatabaseType)}
+  if production {
+   dbArgs.VerticalAutoscaling = &zerops.ServiceVerticalAutoscalingArgs{MinCpu: pulumi.Int(1), MaxCpu: pulumi.Int(1), MinRamGb: pulumi.Float64(0.25), MaxRamGb: pulumi.Float64(0.25), MinDiskGb: pulumi.Float64(2)}
+  }
+  db, err = zerops.NewService(ctx, name+"-database", dbArgs, child)
   if err != nil { return nil, err }
   w.DatabaseServiceId = db.ID().ToStringOutput()
  } else { w.DatabaseServiceId = pulumi.String("").ToStringOutput() }
- service, err := zerops.NewService(ctx, name+"-service", &zerops.ServiceArgs{
+ serviceArgs := &zerops.ServiceArgs{
   ProjectId: project.ID(), Hostname: pulumi.String(*a.Hostname), Type: pulumi.String(a.Runtime), StartWithoutCode: pulumi.Bool(true),
   HorizontalAutoscaling: &zerops.ServiceHorizontalAutoscalingArgs{MinContainers: pulumi.Int(1), MaxContainers: pulumi.Int(1)},
- }, child)
+ }
+ if production {
+  serviceArgs.VerticalAutoscaling = &zerops.ServiceVerticalAutoscalingArgs{MinCpu: pulumi.Int(1), MaxCpu: pulumi.Int(1), MinRamGb: pulumi.Float64(0.25), MaxRamGb: pulumi.Float64(0.25), MinDiskGb: pulumi.Float64(1)}
+ }
+ service, err := zerops.NewService(ctx, name+"-service", serviceArgs, child)
  if err != nil { return nil, err }
  w.Service, w.ServiceId = service, service.ID().ToStringOutput()
  var envs []pulumi.Resource

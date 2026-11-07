@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Move live acceptance to the protected `prod-live` environment and `zerops-prod` runner, retaining secret-free ref/ancestry verification and SHA-pinned actions. Fail closed before tool installation on missing production configuration.
+- Keep the released Terraform v0.1.2 production guard and its `tfacc-` ownership prefix/creation ledger. Use only the dedicated production CI organization, small LIGHT/single-node resources with no IPv4, and an always-run scoped sweep that verifies zero `tfacc-` leftovers.
+- Route live sweeper deletions through the tagged provider's `zguard` ownership ledger and production transport, adopting only API-verified CI projects. Reserve a bounded cleanup window and leave fixed-topology PostgreSQL horizontal sizing unset while keeping its 2 GB disk minimum.
+
 ## 0.1.1 — 2026-10-30
 
 - Pin `terraform-provider-zerops` v0.1.2 from the Go proxy, without a local replacement.

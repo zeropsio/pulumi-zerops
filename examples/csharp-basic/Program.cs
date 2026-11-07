@@ -14,6 +14,8 @@ return await Deployment.RunAsync(() =>
         ProjectId = project.Id,
         Hostname = "app",
         Type = "nodejs@22",
+        HorizontalAutoscaling = new Z.Inputs.ServiceHorizontalAutoscalingArgs { MinContainers = 1, MaxContainers = 1 },
+        VerticalAutoscaling = new Z.Inputs.ServiceVerticalAutoscalingArgs { MinCpu = 1, MaxCpu = 1, MinRamGb = 0.25, MaxRamGb = 0.25, MinDiskGb = 1 },
     });
     var message = new Z.ServiceEnv("message", new Z.ServiceEnvArgs
     {

@@ -11,7 +11,9 @@ app_dir = Path(__file__).parent / "app"
 
 project = zerops.Project("project", name=app_name, mode="LIGHT")
 service = zerops.Service(
-    "app", project_id=project.id, hostname="app", type="nodejs@22"
+    "app", project_id=project.id, hostname="app", type="nodejs@22",
+    horizontal_autoscaling={"min_containers": 1, "max_containers": 1},
+    vertical_autoscaling={"min_cpu": 1, "max_cpu": 1, "min_ram_gb": 0.25, "max_ram_gb": 0.25, "min_disk_gb": 1},
 )
 message_env = zerops.ServiceEnv(
     "message", service_id=service.id, key="MESSAGE", content=message

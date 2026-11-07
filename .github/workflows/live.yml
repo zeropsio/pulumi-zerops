@@ -9,11 +9,11 @@ on:
         default: yaml-webapp
         options: [yaml-basic, yaml-webapp, python-basic, go-basic, csharp-basic, java-basic, ts-basic]
   push:
-    tags: ['v*.*.*']
+    tags: ['v*']
 permissions:
   contents: read
 concurrency:
-  group: ranpu-live
+  group: prod-live
   cancel-in-progress: false
 jobs:
   verify:
@@ -32,7 +32,7 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           [[ "$REPOSITORY" == zeropsio/pulumi-zerops ]]
-          if [[ "$GITHUB_REF" != refs/heads/main && "$GITHUB_REF" != refs/tags/v*.*.* ]]; then
+          if [[ "$GITHUB_REF" != refs/heads/main && "$GITHUB_REF" != refs/tags/v* ]]; then
             echo 'Refusing untrusted ref' >&2
             exit 1
           fi
@@ -42,11 +42,16 @@ jobs:
   live:
     needs: verify
     if: github.repository == 'zeropsio/pulumi-zerops' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
-    runs-on: [self-hosted, linux, x64, zerops-ranpu]
-    environment: ranpu-live
-    timeout-minutes: 90
+    runs-on: [self-hosted, linux, x64, zerops-prod]
+    environment: prod-live
+    timeout-minutes: 120
     env:
-      ZEROPS_SANDBOX: dev
+      ZEROPS_SANDBOX: prod
+      ZEROPS_TARGET: prod
+      ZEROPS_ENDPOINT: ${{ secrets.ZEROPS_ENDPOINT }}
+      ZEROPS_TOKEN: ${{ secrets.ZEROPS_TOKEN }}
+      ZEROPS_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
+      ZEROPS_CI_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
       EXAMPLE: ${{ inputs.example || 'yaml-webapp' }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
@@ -55,12 +60,22 @@ jobs:
           persist-credentials: false
           ref: ${{ needs.verify.outputs.sha }}
           fetch-depth: 0
+      - name: Fail closed on production configuration
+        id: preflight
+        run: bash scripts/live-common.sh
       - name: Initialize isolated live paths
         run: |
           state_root=$RUNNER_TEMP
           [[ ! -d /dev/shm ]] || state_root=/dev/shm
           echo "LIVE_STATE_DIR=$state_root/pulacc-live-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
           echo "PULUMI_HOME=$RUNNER_TEMP/pulacc-plugins-$GITHUB_RUN_ID" >> "$GITHUB_ENV"
+          echo "ZEROPS_PROD_LEDGER=$RUNNER_TEMP/pulacc-production-ledger.tsv" >> "$GITHUB_ENV"
+          echo "PULUMI_ZGUARD=$RUNNER_TEMP/pulumi-zguard" >> "$GITHUB_ENV"
+      - name: Install lifecycle system tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends curl jq openssl build-essential git tar gzip unzip zip ca-certificates
+          if [[ "$EXAMPLE" == java-basic ]]; then sudo apt-get install --yes --no-install-recommends maven; fi
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
           go-version-file: provider/go.mod
@@ -88,7 +103,12 @@ jobs:
       - uses: pulumi/actions@8582a9e8cc630786854029b4e09281acd6794b58 # v6.6.1
         with:
           pulumi-version: 3.273.0
+      - name: Build pinned production cleanup guard
+        timeout-minutes: 5
+        run: |
+          (cd provider && go build -o "$RUNNER_TEMP/pulumi-zguard" github.com/zeropsio/terraform-provider-zerops/tools/zguard)
       - name: Build local plugins and SDK dependencies
+        timeout-minutes: 15
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
@@ -102,29 +122,29 @@ jobs:
           esac
       - name: Exercise lifecycle
         id: lifecycle
+        timeout-minutes: 60
         env:
-          ZEROPS_ENDPOINT: ${{ secrets.ZEROPS_ENDPOINT }}
-          ZEROPS_TOKEN: ${{ secrets.ZEROPS_TOKEN }}
-          ZEROPS_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
-          ZEROPS_DEV_DOMAIN: ${{ secrets.ZEROPS_DEV_DOMAIN }}
+          ZEROPS_CI_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
         run: bash scripts/live-lifecycle.sh "$EXAMPLE"
-      - name: Always destroy and sweep owned stale projects
-        if: always() && steps.checkout.outcome == 'success' && steps.lifecycle.outcome != 'skipped'
-        env:
-          ZEROPS_ENDPOINT: ${{ secrets.ZEROPS_ENDPOINT }}
-          ZEROPS_TOKEN: ${{ secrets.ZEROPS_TOKEN }}
-          ZEROPS_ORGANIZATION_ID: ${{ secrets.ZEROPS_ORGANIZATION_ID }}
-          ZEROPS_DEV_DOMAIN: ${{ secrets.ZEROPS_DEV_DOMAIN }}
+      - name: Always destroy and sweep CI projects to zero
+        if: always() && steps.preflight.outcome == 'success'
+        timeout-minutes: 30
         run: |
           set +e
           status=0
+          if [[ ! -x "$PULUMI_ZGUARD" ]]; then
+            (cd provider && go build -o "$RUNNER_TEMP/pulumi-zguard" github.com/zeropsio/terraform-provider-zerops/tools/zguard) || exit 1
+          fi
           if [[ -f "$LIVE_STATE_DIR/initialized" ]]; then
             export PULUMI_BACKEND_URL="file://$LIVE_STATE_DIR/backend"
             export PULUMI_CONFIG_PASSPHRASE=$(cat "$LIVE_STATE_DIR/passphrase")
             printf '::add-mask::%s\n' "$PULUMI_CONFIG_PASSPHRASE"
             cd "$LIVE_STATE_DIR/program"
-            pulumi destroy --yes --non-interactive || status=1
-            pulumi stack rm --yes --non-interactive || status=1
+            if pulumi destroy --yes --non-interactive; then
+              pulumi stack rm --yes --non-interactive || status=1
+            else
+              status=1
+            fi
             cd "$GITHUB_WORKSPACE"
           fi
           bash scripts/live-sweep.sh || status=1

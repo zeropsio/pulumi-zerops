@@ -6,6 +6,11 @@ source "$root/scripts/live-common.sh"
 example=${1:?Usage: live-lifecycle.sh example-directory}
 [[ -d $example ]] || example="$root/examples/$example"
 [[ -f $example/Pulumi.yaml ]] || { echo 'Example manifest missing' >&2; exit 2; }
+example=$(realpath "$example")
+case "$example" in
+  "$root/examples/yaml-basic"|"$root/examples/yaml-webapp"|"$root/examples/python-basic"|"$root/examples/go-basic"|"$root/examples/csharp-basic"|"$root/examples/java-basic"|"$root/examples/ts-basic") ;;
+  *) echo 'Refusing a program outside the production live example allowlist' >&2; exit 2 ;;
+esac
 state_root=${RUNNER_TEMP:-${TMPDIR:-/tmp}}
 [[ ! -d /dev/shm ]] || state_root=/dev/shm
 base=${LIVE_STATE_DIR:-$(mktemp -d "$state_root/pulacc-live-XXXXXX")}
@@ -21,7 +26,7 @@ cp -a "$example/." "$base/program/"
 cd "$base/program"
 printf '%s' "$PULUMI_CONFIG_PASSPHRASE" > "$base/passphrase"
 chmod 600 "$base/passphrase"
-name="pulacc-ci-${GITHUB_RUN_ID:-$(date +%s)}-$(openssl rand -hex 3)"
+name="tfacc-pulumi-${GITHUB_RUN_ID:-$(date +%s)}-$(openssl rand -hex 3)"
 stack=$name
 printf '%s\n' "$name" > "$base/project-name"
 printf '%s\n' "$stack" > "$base/stack-name"
@@ -30,14 +35,18 @@ cleanup() {
   trap - EXIT
   if [[ -f $base/initialized ]]; then
     if pulumi destroy --yes --non-interactive --stack "$stack"; then
-      confirm_absent "$name" || result=1
-      pulumi stack rm --yes --non-interactive "$stack" || result=1
+      if confirm_absent "$name" && pulumi stack rm --yes --non-interactive "$stack"; then
+        rm "$base/initialized"
+      else
+        result=1
+      fi
     else
       result=1
     fi
   fi
-  # Never retain local backend state or its encryption key, including on failure.
-  rm -rf "$base"
+  bash "$root/scripts/live-sweep.sh" || result=1
+  # Retain failed destroy state for the workflow's final cleanup retry.
+  if [[ ! -f $base/initialized ]]; then rm -rf "$base"; fi
   exit "$result"
 }
 trap cleanup EXIT

@@ -11,6 +11,8 @@ const service = new zerops.Service("app", {
     projectId: project.id,
     hostname: "app",
     type: "nodejs@22",
+    horizontalAutoscaling: { minContainers: 1, maxContainers: 1 },
+    verticalAutoscaling: { minCpu: 1, maxCpu: 1, minRamGb: 0.25, maxRamGb: 0.25, minDiskGb: 1 },
 });
 const message = new zerops.ServiceEnv("message", {
     serviceId: service.id,
