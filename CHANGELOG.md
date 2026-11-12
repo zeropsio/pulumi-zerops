@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.1.2 — 2026-11-12
 
+- 404 not-found handling, via terraform-provider-zerops v0.1.3: refresh and destroy treat HTTP 404 with an entity's not-found code (for example `projectNotFound`) as a deleted resource, like HTTP 400. Zerops is moving these answers from 400 to 404.
+- Pin `terraform-provider-zerops` v0.1.3 from the Go proxy, without a local replacement. Both `zerops` and `zerops-app`, their generated SDKs, component dependency and starter templates now use 0.1.2.
 - Move live acceptance to the protected `prod-live` environment and `zerops-prod` runner, retaining secret-free ref/ancestry verification and SHA-pinned actions. Fail closed before tool installation on missing production configuration.
-- Keep the released Terraform v0.1.2 production guard and its `tfacc-` ownership prefix/creation ledger. Use only the dedicated production CI organization, small LIGHT/single-node resources with no IPv4, and an always-run scoped sweep that verifies zero `tfacc-` leftovers.
+- Keep the pinned Terraform provider's production guard and its `tfacc-` ownership prefix/creation ledger. Use only the dedicated production CI organization, small LIGHT/single-node resources with no IPv4, and an always-run scoped sweep that verifies zero `tfacc-` leftovers.
 - Route live sweeper deletions through the tagged provider's `zguard` ownership ledger and production transport, adopting only API-verified CI projects. Reserve a bounded cleanup window and leave fixed-topology PostgreSQL horizontal sizing unset while keeping its 2 GB disk minimum.
 
 ## 0.1.1 — 2026-10-30

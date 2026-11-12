@@ -23,9 +23,9 @@ Start with the `zerops-app` component SDK for an application; it depends on `zer
 Requires Python >= 3.10. In your project's virtual environment:
 
 ```sh
-python -m pip install pulumi-zerops-app==0.1.1
+python -m pip install pulumi-zerops-app==0.1.2
 # Primitives only:
-python -m pip install pulumi-zerops==0.1.1
+python -m pip install pulumi-zerops==0.1.2
 ```
 
 Imports: `pulumi_zerops_app` and `pulumi_zerops`.
@@ -35,21 +35,21 @@ Imports: `pulumi_zerops_app` and `pulumi_zerops`.
 Requires Go >= 1.26.6 with the current modules:
 
 ```sh
-go get github.com/zeropsio/pulumi-zerops/sdk-app/go/zeropsapp@v0.1.1
+go get github.com/zeropsio/pulumi-zerops/sdk-app/go/zeropsapp@v0.1.2
 # Primitives only:
-go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.1
+go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.2
 ```
 
-The modules are `github.com/zeropsio/pulumi-zerops/sdk-app` and `github.com/zeropsio/pulumi-zerops/sdk`, released with tags `sdk-app/v0.1.1` and `sdk/v0.1.1`. `components/` and `sdk-app/` retain monorepo `replace` directives for development; Go does not apply dependency modules' replacements to your project. Consumer programs do not need these replacements.
+The modules are `github.com/zeropsio/pulumi-zerops/sdk-app` and `github.com/zeropsio/pulumi-zerops/sdk`, released with tags `sdk-app/v0.1.2` and `sdk/v0.1.2`. `components/` and `sdk-app/` retain monorepo `replace` directives for development; Go does not apply dependency modules' replacements to your project. Consumer programs do not need these replacements.
 
 ### C# / .NET
 
 Use the .NET 8 or 10 SDK. Both language SDKs target `net6.0`; the starter targets .NET 8.
 
 ```sh
-dotnet add package Zerops.Pulumi.App --version 0.1.1
+dotnet add package Zerops.Pulumi.App --version 0.1.2
 # Primitives only:
-dotnet add package Zerops.Pulumi --version 0.1.1
+dotnet add package Zerops.Pulumi --version 0.1.2
 ```
 
 Namespaces match the package names: `Zerops.Pulumi.App` and `Zerops.Pulumi`.
@@ -62,7 +62,7 @@ Use Java 17+ and Maven for the starter. The SDKs themselves build using JDK 21 a
 <dependency>
   <groupId>io.zerops</groupId>
   <artifactId>pulumi-app</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -79,9 +79,9 @@ Java packages are `io.zerops.zeropsapp` and `io.zerops.zerops` respectively, not
 Node.js 22 LTS is tested:
 
 ```sh
-npm install @zerops/pulumi-app@0.1.1
+npm install @zerops/pulumi-app@0.1.2
 # Primitives only:
-npm install @zerops/pulumi@0.1.1
+npm install @zerops/pulumi@0.1.2
 ```
 
 ### YAML
@@ -90,11 +90,11 @@ No language runtime or language SDK is needed. Use `zerops-app:index:WebApp` for
 
 ## Provider plugins
 
-Language SDKs carry plugin download metadata. The CLI downloads compiled resource plugins from GitHub releases; you do not need Go to run them. For a pinned YAML program, set resource `options.version: 0.1.1`. To install explicitly (or prepare a plugin cache):
+Language SDKs carry plugin download metadata. The CLI downloads compiled resource plugins from GitHub releases; you do not need Go to run them. For a pinned YAML program, set resource `options.version: 0.1.2`. To install explicitly (or prepare a plugin cache):
 
 ```sh
-pulumi plugin install resource zerops 0.1.1 --server github://api.github.com/zeropsio/pulumi-zerops
-pulumi plugin install resource zerops-app 0.1.1 --server github://api.github.com/zeropsio/pulumi-zerops
+pulumi plugin install resource zerops 0.1.2 --server github://api.github.com/zeropsio/pulumi-zerops
+pulumi plugin install resource zerops-app 0.1.2 --server github://api.github.com/zeropsio/pulumi-zerops
 ```
 
 `WebApp` uses both plugins. A primitives-only program only needs `zerops`.

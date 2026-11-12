@@ -13,22 +13,22 @@ Install the [Pulumi CLI](https://www.pulumi.com/docs/install/) and the SDK for y
 {{< chooser language "typescript,python,go,csharp,java,yaml" >}}
 {{% choosable language typescript %}}
 ```sh
-npm install @zerops/pulumi@0.1.1
+npm install @zerops/pulumi@0.1.2
 ```
 {{% /choosable %}}
 {{% choosable language python %}}
 ```sh
-python -m pip install pulumi-zerops==0.1.1
+python -m pip install pulumi-zerops==0.1.2
 ```
 {{% /choosable %}}
 {{% choosable language go %}}
 ```sh
-go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.1
+go get github.com/zeropsio/pulumi-zerops/sdk/go/zerops@v0.1.2
 ```
 {{% /choosable %}}
 {{% choosable language csharp %}}
 ```sh
-dotnet add package Zerops.Pulumi --version 0.1.1
+dotnet add package Zerops.Pulumi --version 0.1.2
 ```
 {{% /choosable %}}
 {{% choosable language java %}}
@@ -36,13 +36,13 @@ dotnet add package Zerops.Pulumi --version 0.1.1
 <dependency>
   <groupId>io.zerops</groupId>
   <artifactId>pulumi</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 {{% /choosable %}}
 {{% choosable language yaml %}}
 ```sh
-pulumi plugin install resource zerops 0.1.1 --server github://api.github.com/zeropsio/pulumi-zerops
+pulumi plugin install resource zerops 0.1.2 --server github://api.github.com/zeropsio/pulumi-zerops
 ```
 {{% /choosable %}}
 {{< /chooser >}}
@@ -148,14 +148,14 @@ resources:
   project:
     type: zerops:index:Project
     options:
-      version: 0.1.1
+      version: 0.1.2
     properties:
       name: hello
       mode: LIGHT
   service:
     type: zerops:index:Service
     options:
-      version: 0.1.1
+      version: 0.1.2
     properties:
       projectId: ${project.id}
       hostname: app

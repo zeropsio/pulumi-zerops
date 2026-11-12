@@ -43,8 +43,8 @@ type WebApp struct {
  ServiceId pulumi.StringOutput `pulumi:"serviceId"`
  DatabaseServiceId pulumi.StringOutput `pulumi:"databaseServiceId,optional"`
  ConnectionEnvNames pulumi.StringArrayOutput `pulumi:"connectionEnvNames"`
- Project *zerops.Project `pulumi:"project" provider:"type=zerops@0.1.1:index/project:Project"`
- Service *zerops.Service `pulumi:"service" provider:"type=zerops@0.1.1:index/service:Service"`
+ Project *zerops.Project `pulumi:"project" provider:"type=zerops@0.1.2:index/project:Project"`
+ Service *zerops.Service `pulumi:"service" provider:"type=zerops@0.1.2:index/service:Service"`
 }
 
 func (*WebApp) Annotate(a infer.Annotator) { a.SetToken("index", "WebApp") }

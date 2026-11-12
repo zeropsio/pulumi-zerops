@@ -13,7 +13,7 @@ import (
  components "github.com/zeropsio/pulumi-zerops/components"
 )
 
-var version = "0.1.1"
+var version = "0.1.2"
 
 func main() {
  p, err := infer.NewProviderBuilder().
@@ -54,7 +54,7 @@ func withPrimitiveDependency(p provider.Provider) provider.Provider {
   if err := json.Unmarshal([]byte(response.Schema), &spec); err != nil { return provider.GetSchemaResponse{}, err }
   spec.Dependencies = []schema.PackageDescriptor{{
    Name: "zerops",
-   Version: new(semver.MustParse("0.1.1")),
+   Version: new(semver.MustParse("0.1.2")),
    DownloadURL: "github://api.github.com/zeropsio/pulumi-zerops",
   }}
   data, err := json.Marshal(spec)

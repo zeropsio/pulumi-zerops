@@ -62,7 +62,7 @@ The root build targets regenerate SDKs before compiling/packaging them. `compone
 Component SDK generation first builds and installs the matching local `zerops` plugin into the current `PULUMI_HOME`; no pre-populated plugin cache is required. The component schema also records the primitive package version and GitHub plugin download URL, so external resource references retain their plugin source when resolved outside the monorepo. YAML examples and starters pin both the plugin version and download URL explicitly.
 
 ```sh
-make VERSION=0.1.1 provider components build_sdks build_app_sdks
+make VERSION=0.1.2 provider components build_sdks build_app_sdks
 ```
 
 The Go `replace` directives in `components/go.mod` and `sdk-app/go.mod` point to `../sdk` for monorepo development; dependency consumers do not inherit them. Templates must reference published module/package identities, with no local replacements. Go releases require both `sdk/vX.Y.Z` and `sdk-app/vX.Y.Z` tags.
@@ -80,7 +80,7 @@ Replace `python` with `go`, `dotnet`, `java` or `nodejs` as appropriate; build t
 
 Live tests create billable Zerops resources and are **maintainer-run**. Use only the dedicated production CI organization, never a customer organization, and a restricted CI token. Never supply credentials to untrusted pull requests.
 
-The [live workflow](.github/workflows/live.yml) runs weekly, by manual dispatch, and on `v*` tags only. Its secret-free GitHub-hosted verification job checks the repository/ref and `main` ancestry before the `zerops-prod` runner enters the protected `prod-live` environment. Concurrency `prod-live` prevents overlapping runs. Before installing tools or building, it requires environment secrets `ZEROPS_ENDPOINT` (exactly `https://api.app-prg1.zerops.io`), `ZEROPS_TOKEN` and `ZEROPS_ORGANIZATION_ID`. The organization secret also supplies the helper's `ZEROPS_CI_ORGANIZATION_ID` pin. It sets `ZEROPS_SANDBOX=prod` and retains the released Terraform v0.1.2 provider's production transport/creation ledger. It builds local dependencies and invokes:
+The [live workflow](.github/workflows/live.yml) runs weekly, by manual dispatch, and on `v*` tags only. Its secret-free GitHub-hosted verification job checks the repository/ref and `main` ancestry before the `zerops-prod` runner enters the protected `prod-live` environment. Concurrency `prod-live` prevents overlapping runs. Before installing tools or building, it requires environment secrets `ZEROPS_ENDPOINT` (exactly `https://api.app-prg1.zerops.io`), `ZEROPS_TOKEN` and `ZEROPS_ORGANIZATION_ID`. The organization secret also supplies the helper's `ZEROPS_CI_ORGANIZATION_ID` pin. It sets `ZEROPS_SANDBOX=prod` and retains the released Terraform v0.1.3 provider's production transport/creation ledger. It builds local dependencies and invokes:
 
 ```sh
 bash scripts/live-lifecycle.sh yaml-webapp

@@ -7,5 +7,5 @@ import (
 	"github.com/blang/semver"
 )
 
-var SdkVersion semver.Version = semver.MustParse("0.1.1")
+var SdkVersion semver.Version = semver.MustParse("0.1.2")
 var pluginDownloadURL string = "github://api.github.com/zeropsio/pulumi-zerops"
